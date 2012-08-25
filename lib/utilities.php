@@ -55,12 +55,10 @@ function mandat_prepare_form_vars($mandat = null) {
  * @return array
  */
 function candidat_prepare_form_vars($candidat = null) {
-	$user = elgg_get_logged_in_user_guid();
-	
+
 	$values = array(
-		'title' => get_input('title', ''),
 		'description' => '',
-		'container_guid' => elgg_get_page_owner_guid(),
+		'mandat_guid' => elgg_get_page_owner_guid(),
 		'guid' => null,
 	);
 

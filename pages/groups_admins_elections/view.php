@@ -29,7 +29,7 @@ elgg_push_breadcrumb($title);
 if ($container->canWritetoContainer()) {
 	elgg_register_menu_item('title', array(
 		'name' => 'groups_admins_elections_candidats_add',
-		'href' => "elections/candidats/add/$mandat_guid",
+		'href' => "elections/add/$mandat_guid",
 		'text' => elgg_echo('groups_admins_elections:candidats:add'),
 		'link_class' => 'elgg-button elgg-button-action gwfb',
 	));

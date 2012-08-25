@@ -21,7 +21,8 @@ $english = array(
 	 * River
 	 */
 	'river:create:object:mandat' => "%s a crée le mandat %s",
-
+	'river:create:object:candidat' => "%s s'est %s pour %s %s",
+	'river_be_candidat' => "porté candidat",
 	/*
 	 * Form fields
 	 */

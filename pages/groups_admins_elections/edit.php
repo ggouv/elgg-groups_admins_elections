@@ -14,9 +14,7 @@
 group_gatekeeper();
 
 $entity_guid = (int)get_input('guid');
-global $fb; $fb->info($entity_guid);
 $group = elgg_get_page_owner_entity();
-
 $user = elgg_get_logged_in_user_entity();
 
 $entity = get_entity($entity_guid);

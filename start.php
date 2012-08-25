@@ -38,11 +38,13 @@ function groups_admins_elections_init() {
 	// actions
 	$action_base = "$root/actions/groups_admins_elections";
 	elgg_register_action('groups_admins_elections/edit-mandat', "$action_base/edit-mandat.php");
+	elgg_register_action('groups_admins_elections/edit-candidat', "$action_base/edit-candidat.php");
 
 	// Register entity type
 
-	// Register a URL handler for brainstorm
-	elgg_register_entity_url_handler('object', 'mandat', 'mandat_url');
+	// Register a URL handler for mandat and candidat
+	elgg_register_entity_url_handler('object', 'mandat', 'mandat_candidat_url');
+	elgg_register_entity_url_handler('object', 'candidat', 'mandat_candidat_url');
 
 	// Register entity menu
 
@@ -107,7 +109,7 @@ function groups_admins_elections_handler($page) {
  * @param ElggEntity $entity The mandat object
  * @return string mandat item URL
  */
-function mandat_url($entity) {
+function mandat_candidat_url($entity) {
 	global $CONFIG;
 
 	$title = $entity->title;

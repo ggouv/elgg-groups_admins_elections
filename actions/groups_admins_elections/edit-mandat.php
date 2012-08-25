@@ -23,14 +23,14 @@ $container_guid = (int)get_input('container_guid', elgg_get_page_owner_guid());
 $user_guid = elgg_get_logged_in_user_guid();
 
 if (!$container_guid) {
-	register_error(elgg_echo('groups_admins_elections:mandat:save:fail1'));
+	register_error(elgg_echo('groups_admins_elections:mandat:save:fail'));
 	forward(REFERER);
 }
 
 $group = get_entity($container_guid);
 
 if (!$group || !$group->canEdit()) {
-	register_error(elgg_echo('groups_admins_elections:mandat:save:fail2'));
+	register_error(elgg_echo('groups_admins_elections:mandat:save:fail'));
 	forward(REFERER);
 }
 
@@ -64,6 +64,6 @@ if ($mandat->save()) {
 
 	forward(elgg_get_site_url() . "elections/group/$container_guid/mandats");
 } else {
-	register_error(elgg_echo('groups_admins_elections:mandat:save:fail4'));
+	register_error(elgg_echo('groups_admins_elections:mandat:save:fail'));
 	forward(REFERER);
 }
