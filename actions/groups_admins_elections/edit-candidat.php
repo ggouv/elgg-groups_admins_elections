@@ -32,6 +32,21 @@ if (!$group || !$group->canWritetoContainer()) {
 	forward(REFERER);
 }
 
+$candidats_count = elgg_get_entities_from_metadata(array(
+	'type' => 'object',
+	'subtypes' => 'candidat',
+	'container_guid' => $mandat->container_guid, // Unique candidature on all site ??
+	'metadata_name' => 'mandat_guid',
+	'metadata_value' => $mandat_guid,
+	'metadata_owner_guid' => $user_guid,
+	'limit' => 0,
+	'count' => true
+));
+if ($candidats_count >= 1) {
+	register_error(elgg_echo('groups_admins_elections:candidat:already_candidat'));
+	forward(REFERER);
+}
+
 if (!$description ) {
 	register_error(elgg_echo('groups_admins_elections:candidat:save:empty'));
 	forward(REFERER);

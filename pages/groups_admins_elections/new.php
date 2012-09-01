@@ -36,14 +36,14 @@ if (!$entity) {
 		forward(REFERER);
 	}
 
-	elgg_push_breadcrumb('groups_admins_elections:mandats');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'));
 	elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
-	elgg_push_breadcrumb('groups_admins_elections:mandat:new');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandat:new'));
 	
-	$title = elgg_echo('groups_admins_elections:mandat:title:new');
+	$title = elgg_echo('groups_admins_elections:mandat:title:new', array($container->name));
 	
 	$vars = mandat_prepare_form_vars();
-	$content = elgg_view_form('groups_admins_elections/edit-mandat', array(), $vars);
+	$content = elgg_view_form('elections/edit-mandat', array(), $vars);
 	
 } else if ($entity->subtype == get_subtype_id('object', 'mandat')) {
 
@@ -59,6 +59,21 @@ if (!$entity) {
 		forward(REFERER);
 	}
 	
+	$count = elgg_get_entities_from_metadata(array(
+		'type' => 'object',
+		'subtypes' => 'candidat',
+		'container_guid' => $entity->container_guid, // Unique candidature on all site ??
+		'metadata_name' => 'mandat_guid',
+		'metadata_value' => $entity->guid,
+		'metadata_owner_guid' => elgg_get_logged_in_user_guid(),
+		'limit' => 0,
+		'count' => true
+	));
+	if ($count >=1) {
+		register_error(elgg_echo('groups_admins_elections:candidat:already_candidat'));
+		forward(REFERER);
+	}
+	
 	elgg_push_breadcrumb('groups_admins_elections:candidats');
 	elgg_push_breadcrumb($entity->title, $entity->getURL());
 	elgg_push_breadcrumb('groups_admins_elections:candidat:new');
@@ -66,7 +81,7 @@ if (!$entity) {
 	$title = elgg_echo('groups_admins_elections:candidat:title:new');
 	
 	$vars = candidat_prepare_form_vars();
-	$content = elgg_view_form('groups_admins_elections/edit-candidat', array(), $vars);
+	$content = elgg_view_form('elections/edit-candidat', array(), $vars);
 
 } else {
 

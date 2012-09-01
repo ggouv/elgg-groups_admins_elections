@@ -18,7 +18,7 @@ $group = elgg_get_page_owner_entity();
 $user = elgg_get_logged_in_user_entity();
 
 $entity = get_entity($entity_guid);
-
+global $fb; $fb->info($entity);
 if (!$group || $group->type != 'group') {
 	register_error(elgg_echo('groups_admins_elections:group:failed'));
 	forward(REFERER);
@@ -42,9 +42,9 @@ if (!$entity) {
 	$vars = mandat_prepare_form_vars($entity);
 	$content = elgg_view_form('groups_admins_elections/edit-mandat', array(), $vars);
 } else if ($entity->subtype == get_subtype_id('object', 'candidat')) {
-	elgg_push_breadcrumb('groups_admins_elections:candidats');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'));
 	elgg_push_breadcrumb($entity->name, $group->getURL());
-	elgg_push_breadcrumb('groups_admins_elections:candidat:edit');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidat:edit'));
 	
 	$title = elgg_echo('groups_admins_elections:candidat:title:edit', array($entity->name));
 	

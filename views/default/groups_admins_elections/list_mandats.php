@@ -10,15 +10,19 @@
  *
  **/
 
-$container_guid = elgg_get_page_owner_guid();
+$group_guid = elgg_get_page_owner_guid();
 
-echo "<a href='" . elgg_get_site_url() . "elections/group/$container_guid/mandats' class='elgg-button elgg-button-action'>admins page</a>";
+/*echo "<a href='" . elgg_get_site_url() . "elections/group/$container_guid/mandats' class='elgg-button elgg-button-action'>admins page</a>";*/
 
-$list =  elgg_list_entities(array(
+$list_mandats = elgg_get_entities(array(
 	'type' => 'object',
 	'subtype' => 'mandat',
-	'container_guid' => $container_guid,
-	'full_view' => 'in_group_profile'
+	'container_guid' => $group_guid,
 ));
 
-echo $list;
+foreach ($list_mandats as $item) {
+	$html .= "<li id=\"elgg-{$item->getType()}-{$item->getGUID()}\" class=\"$item_class\">";
+	$html .= elgg_view_list_item($item, array('full_view' => 'in_group_profile'));
+	$html .= '</li>';
+}
+echo $html;

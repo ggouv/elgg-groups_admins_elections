@@ -21,7 +21,7 @@ if (!$group || $group->type != 'group') {
 	forward(REFERER);
 }
 
-elgg_push_breadcrumb('groups_admins_elections:mandats', 'elections/all');
+elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
 elgg_push_breadcrumb($group->name);
 
 if ($group->canEdit()) {
@@ -39,7 +39,8 @@ $content = elgg_list_entities(array(
 	'type' => 'object',
 	'subtype' => 'mandat',
 	'container_guid' => $group->guid,
-	'limit' => 0
+	'limit' => 0,
+	'full_view' => false
 ));
 
 if (!$content) {
