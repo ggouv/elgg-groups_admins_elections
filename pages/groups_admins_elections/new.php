@@ -74,14 +74,15 @@ if (!$entity) {
 		forward(REFERER);
 	}
 	
-	elgg_push_breadcrumb('groups_admins_elections:candidats');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'));
 	elgg_push_breadcrumb($entity->title, $entity->getURL());
-	elgg_push_breadcrumb('groups_admins_elections:candidat:new');
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidat:new'));
 	
-	$title = elgg_echo('groups_admins_elections:candidat:title:new');
+	$title = elgg_echo('groups_admins_elections:candidat:title:new', array($entity->title));
 	
 	$vars = candidat_prepare_form_vars();
-	$content = elgg_view_form('elections/edit-candidat', array(), $vars);
+	$content = '<p>' . elgg_echo('groups_admins_elections:candidat:intro') . '</p>';
+	$content .= elgg_view_form('elections/edit-candidat', array(), $vars);
 
 } else {
 

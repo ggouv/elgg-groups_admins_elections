@@ -21,7 +21,7 @@ $list_mandats = elgg_get_entities(array(
 ));
 
 foreach ($list_mandats as $item) {
-	$html .= "<li id=\"elgg-{$item->getType()}-{$item->getGUID()}\" class=\"$item_class\">";
+	$html .= "<li id=\"elgg-{$item->getType()}-{$item->getGUID()}\" class='mandats'>";
 	$html .= elgg_view_list_item($item, array('full_view' => 'in_group_profile'));
 	$html .= '</li>';
 }

@@ -9,6 +9,8 @@
  *	Elgg-groups_admins_elections candidat river view
  *
  */
+global $jsonexport;
+
 $item = $vars['item'];
 
 $subject = $item->getSubjectEntity();
@@ -34,15 +36,25 @@ $object_link = elgg_view('output/url', array(
 
 $mandat_link = elgg_view('output/url', array(
 	'href' => $mandat->getURL(),
-	'text' => $mandat->title,
+	'text' => $mandat->title ? $mandat->title : $mandat->name,
 	'class' => 'elgg-river-object',
 	'is_trusted' => true,
 ));
 
-$summary = elgg_echo('river:create:object:candidat', array($subject_link, $object_link, $mandat_link, ''));
+$container = $object->getContainerEntity();
+if ($container instanceof ElggGroup) {
+	$params = array(
+		'href' => $container->getURL(),
+		'text' => $container->name,
+		'is_trusted' => true,
+	);
+	$group_link = elgg_view('output/url', $params);
+	$group_string = elgg_echo('river:ingroup', array($group_link));
+}
 
-echo elgg_view('river/elements/layout', array(
-	'item' => $vars['item'],
-	'message' => $excerpt,
-	'summary' => $summary
-));
+$summary = elgg_echo('river:create:object:candidat', array($subject_link, $object_link, $mandat_link, $group_string));
+
+$vars['item']->summary = $summary;
+$vars['item']->message = $message;
+
+$jsonexport['activity'][] = $vars['item'];

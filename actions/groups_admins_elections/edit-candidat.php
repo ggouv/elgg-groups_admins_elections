@@ -21,27 +21,27 @@ $mandat_guid = (int)get_input('mandat_guid');
 $user_guid = elgg_get_logged_in_user_guid();
 
 if (!$mandat_guid) {
-	register_error(elgg_echo('groups_admins_elections:candidat:save:fail2'));
+	register_error(elgg_echo('groups_admins_elections:candidat:save:fail'));
 	forward(REFERER);
 }
 $mandat = get_entity($mandat_guid);
 $group = get_entity($mandat->container_guid);
 
 if (!$group || !$group->canWritetoContainer()) {
-	register_error(elgg_echo('groups_admins_elections:candidat:group:fail1'));
+	register_error(elgg_echo('groups_admins_elections:candidat:group:fail'));
 	forward(REFERER);
 }
 
-$candidats_count = elgg_get_entities_from_metadata(array(
+$candidated = elgg_get_entities_from_metadata(array(
 	'type' => 'object',
-	'subtypes' => 'candidat',
-	'container_guid' => $mandat->container_guid, // Unique candidature on all site ??
+	'subtype' => 'candidat',
+	'owner_guid' => $user_guid,
 	'metadata_name' => 'mandat_guid',
-	'metadata_value' => $mandat_guid,
-	'metadata_owner_guid' => $user_guid,
+	'metadata_value' => $mandat->guid,
 	'limit' => 0,
 	'count' => true
 ));
+
 if ($candidats_count >= 1) {
 	register_error(elgg_echo('groups_admins_elections:candidat:already_candidat'));
 	forward(REFERER);
@@ -77,6 +77,6 @@ if ($candidat->save()) {
 	
 	forward($candidat->getURL());
 } else {
-	register_error(elgg_echo('groups_admins_elections:candidat:save:fail3'));
+	register_error(elgg_echo('groups_admins_elections:candidat:save:fail'));
 	forward(REFERER);
 }

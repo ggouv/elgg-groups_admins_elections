@@ -38,6 +38,7 @@ function groups_admins_elections_init() {
 	elgg_register_action('elections/edit-mandat', "$action_base/edit-mandat.php");
 	elgg_register_action('elections/edit-candidat', "$action_base/edit-candidat.php");
 	elgg_register_action('elections/elect', "$action_base/elect.php");
+	elgg_register_action('elections/delete', "$action_base/delete.php");
 
 	// Register entity type
 

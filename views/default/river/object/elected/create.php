@@ -6,7 +6,7 @@
  *	@license GNU Affero General Public License, version 3 or late
  *	@link https://github.com/ManUtopiK/elgg-groups_admins_elections
  *
- *	Elgg-groups_admins_elections candidat river view
+ *	Elgg-groups_admins_elections elected river view
  *
  */
 $item = $vars['item'];
@@ -14,9 +14,6 @@ $item = $vars['item'];
 $subject = $item->getSubjectEntity();
 $object = $item->getObjectEntity();
 $mandat = get_entity($object->mandat_guid);
-
-$excerpt = strip_tags($object->description);
-$excerpt = elgg_get_excerpt($excerpt);
 
 $subject_link = elgg_view('output/url', array(
 	'href' => $subject->getURL(),
@@ -27,7 +24,7 @@ $subject_link = elgg_view('output/url', array(
 
 $object_link = elgg_view('output/url', array(
 	'href' => $object->getURL(),
-	'text' => elgg_echo('river_be_candidat'),
+	'text' => elgg_echo('river_elected'),
 	'class' => 'elgg-river-object',
 	'is_trusted' => true,
 ));
@@ -39,10 +36,31 @@ $mandat_link = elgg_view('output/url', array(
 	'is_trusted' => true,
 ));
 
-$summary = elgg_echo('river:create:object:candidat', array($subject_link, $object_link, $mandat_link, ''));
+$container = $object->getContainerEntity();
+if ($container instanceof ElggGroup) {
+	$params = array(
+		'href' => $container->getURL(),
+		'text' => $container->name,
+		'is_trusted' => true,
+	);
+	$group_link = elgg_view('output/url', $params);
+	$group_string = elgg_echo('river:ingroup', array($group_link));
+}
+
+$summary = elgg_echo('river:create:object:elected', array($subject_link, $object_link, $mandat_link, $group_string));
+
+$election_triggered_by = get_entity($object->election_triggered_by);
+$election_triggered_by_link = elgg_view('output/url', array(
+	'href' => $election_triggered_by->getURL(),
+	'text' => $election_triggered_by->name,
+	'class' => 'elgg-river-object',
+	'is_trusted' => true,
+));
+
+$message = elgg_echo('river_elected_message', array($election_triggered_by_link, $object->nbr_candidats));
 
 echo elgg_view('river/elements/layout', array(
 	'item' => $vars['item'],
-	'message' => $excerpt,
-	'summary' => $summary
+	'summary' => $summary,
+	'message' => $message,
 ));

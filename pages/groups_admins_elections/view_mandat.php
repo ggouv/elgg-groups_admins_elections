@@ -17,7 +17,9 @@ elgg_set_page_owner_guid($mandat->container_guid);
 $container = elgg_get_page_owner_entity();
 $filter_context = elgg_get_context();
 
-if (!$mandat || !$container || !in_array($filter_context, array('view', 'candidats', 'history'))) {
+$user_guid = elgg_get_logged_in_user_guid();
+
+if (!$user_guid || !$mandat || !$container || !in_array($filter_context, array('view', 'candidats', 'history'))) {
 	register_error(elgg_echo('groups_admins_elections:view:error'));
 	forward(REFERER);
 }
@@ -28,7 +30,18 @@ elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/al
 elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
 elgg_push_breadcrumb($title);
 
-if ($container->canWritetoContainer()) {
+$candidated = elgg_get_entities_from_metadata(array(
+	'type' => 'object',
+	'subtype' => 'candidat',
+	'container_guid' => $container->guid,
+	'owner_guid' => $user_guid,
+	'metadata_name' => 'mandat_guid',
+	'metadata_value' => $mandat->guid,
+	'limit' => 0,
+	'count' => true
+));
+
+if ($container->canWritetoContainer() && $candidated == 0) {
 	elgg_register_menu_item('title', array(
 		'name' => 'groups_admins_elections_candidats_add',
 		'href' => "elections/add/$mandat_guid",
@@ -64,8 +77,8 @@ if ($filter_context == 'view') {
 	$content = elgg_list_entities_from_metadata(array(
 		'type' => 'object',
 		'subtypes' => 'elected',
-		'metadata_name' => 'mandat_guid',
-		'metadata_value' => $mandat->guid,
+		/*'metadata_name' => 'mandat_guid',
+		'metadata_value' => $mandat->guid,*/
 		'limit' => 30,
 		'full_view' => true,
 		'pagination' => true
