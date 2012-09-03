@@ -22,6 +22,8 @@ $english = array(
 	'groups_admins_elections:mandat' => "Mandat",
 	'groups_admins_elections:mandats' => "Mandats",
 	'groups_admins_elections:mandat:history' => "Historique",
+	'groups_admins_elections:mandat:edit' => "Modifier",
+	'groups_admins_elections:mandat:title:edit' => "Modifier le mandat %s",
 	
 	'groups_admins_elections:candidat:new' => "Se porter candidat",
 	'groups_admins_elections:candidats' => "Candidats",
@@ -29,6 +31,8 @@ $english = array(
 	'groups_admins_elections:candidat:title' => "Candidature de %s",
 	'groups_admins_elections:candidat:title:new' => "Se porter candidat pour le mandat %s",
 	'groups_admins_elections:candidat:intro' => "Vous devez déclarer vos intentions et vos motivations pour votre candidature.",
+	'groups_admins_elections:candidat:edit' => "Modifier",
+	'groups_admins_elections:candidat:title:edit' => "Modifier la candidature de %s",
 
 	'groups_admins_elections:elected:none' => "Il n'y a pas encore eu d'élection.",
 	
@@ -46,6 +50,8 @@ $english = array(
 	'groups_admins_elections:mandat:occupy_by' => "Mandat occupé par :",
 	'groups_admins_elections:mandat:next_election' => "Prochaine élection :",
 	'groups_admins_elections:mandat:next_election_date' => "%A %e %B %Y",
+	'groups_admins_elections:mandat:tiny_next_election_date' => "%d-%m-%y",
+	'groups_admins_elections:mandat:until' => "Jusqu'au",
 	
 	'groups_admins_elections:candidat:created_by' => "s'est porté candidat",
 	

@@ -42,7 +42,13 @@ if (!$current_elected) {
 }
 
 if ($full === 'in_group_profile') {
-
+	
+	if ($current_elected) {
+		elgg_load_library('groups_admins_elections:utilities'); // this view is displayed on group profile, so we need to load this library
+		$mandat_next_election_tiny = '<br/><span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:until') . '</span><br/><span class="elgg-river-timestamp date">' .
+			date_next_election($current_elected[0]->end_mandat, 'groups_admins_elections:mandat:tiny_next_election_date') . '</span>';
+	}
+	
 	$params = array(
 		'text' => $mandat->title,
 		'href' => $mandat->getURL(),
@@ -52,7 +58,7 @@ if ($full === 'in_group_profile') {
 
 	$body = <<<HTML
 	<h3>$title_link</h3>
-	$owner_elected_icon $owner_elected_view
+	$owner_elected_icon $owner_elected_view $mandat_next_election_tiny
 HTML;
 
 	echo $body;

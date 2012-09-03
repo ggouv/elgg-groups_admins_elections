@@ -6,21 +6,21 @@
  *	@license GNU Affero General Public License, version 3 or late
  *	@link https://github.com/ManUtopiK/elgg-groups_admins_elections
  *
- *	Elgg-groups_admins_elections Object candidat
+ *	Elgg-groups_admins_elections Object elected
  *
  */
 $full = elgg_extract('full_view', $vars, false);
-$candidat = elgg_extract('entity', $vars, false);
+$elected = elgg_extract('entity', $vars, false);
 
-if (!$candidat) {
+if (!$elected) {
 	return;
 }
 
-$owner = $candidat->getOwnerEntity();
+$owner = $elected->getOwnerEntity();
 $owner_icon = elgg_view_entity_icon($owner, 'small');
-$container = $candidat->getContainerEntity();
+$container = $elected->getContainerEntity();
 
-$description = elgg_view('output/longtext', array('value' => $candidat->description, 'class' => 'pbs'));
+$description = elgg_view('output/longtext', array('value' => $elected->description, 'class' => 'pbs'));
 
 $owner_link = elgg_view('output/url', array(
 	'href' => "profile/$owner->username",
@@ -28,14 +28,14 @@ $owner_link = elgg_view('output/url', array(
 	'is_trusted' => true,
 ));
 
-$date = elgg_view_friendly_time($candidat->time_created);
+$date = elgg_view_friendly_time($elected->time_created);
 
-$comments_count = $candidat->countComments();
+$comments_count = $elected->countComments();
 //only display if there are commments
 if ($comments_count != 0) {
 	$text = elgg_echo("comments") . " ($comments_count)";
 	$comments_link = elgg_view('output/url', array(
-		'href' => $candidat->getURL() . '#comments',
+		'href' => $elected->getURL() . '#comments',
 		'text' => $text,
 		'is_trusted' => true,
 	));
@@ -44,7 +44,7 @@ if ($comments_count != 0) {
 }
 
 $metadata = elgg_view_menu('entity', array(
-	'entity' => $candidat,
+	'entity' => $elected,
 	'handler' => 'elections',
 	'sort_by' => 'priority',
 	'class' => 'elgg-menu-hz',
@@ -54,7 +54,7 @@ $subtitle = "$author_text $date $comments_link";
 
 if ($full) {
 	$params = array(
-		'entity' => $candidat,
+		'entity' => $elected,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'title' => $owner_link
@@ -63,13 +63,13 @@ if ($full) {
 	$summary = elgg_view('object/elements/summary', $params);
 
 	$body = <<<HTML
-<div class="candidat elgg-content">
+<div class="elected elgg-content">
 	$description
 </div>
 HTML;
 
 	echo elgg_view('object/elements/full', array(
-		'entity' => $candidat,
+		'entity' => $elected,
 		'icon' => $owner_icon,
 		'summary' => $summary,
 		'body' => $body,
@@ -77,16 +77,16 @@ HTML;
 
 } else {
 	// brief view
-	$excerpt = elgg_get_excerpt($candidat->description);
+	$excerpt = elgg_get_excerpt($elected->description);
 	
 	$title_link = elgg_view('output/url', array(
-		'text' => elgg_echo('groups_admins_elections:candidat:created_by'),
-		'href' => $candidat->getURL() . "{$owner->name}",
+		'text' => elgg_echo('groups_admins_elections:elected:created_by'),
+		'href' => $elected->getURL() . "{$owner->name}",
 		'is_trusted' => true,
 	));
 
 	$params = array(
-		'entity' => $candidat,
+		'entity' => $elected,
 		'metadata' => $metadata,
 		'title' => $owner_link . '&nbsp;' . $title_link,
 		'subtitle' => $date . '&nbsp;' . $comments_link,
@@ -95,13 +95,13 @@ HTML;
 	$summary = elgg_view('object/elements/summary', $params);
 	
 	$body = <<<HTML
-<div class="candidat elgg-content">
+<div class="elected elgg-content">
 	$excerpt
 </div>
 HTML;
 
 	echo elgg_view('object/elements/full', array(
-		'entity' => $candidat,
+		'entity' => $elected,
 		'icon' => $owner_icon,
 		'summary' => $summary,
 		'body' => $body,
