@@ -28,7 +28,6 @@ $title = $mandat->title;
 
 elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
 elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
-elgg_push_breadcrumb($title);
 
 $candidated = elgg_get_entities_from_metadata(array(
 	'type' => 'object',
@@ -60,20 +59,32 @@ if ($container->canEdit()) {
 }
 
 if ($filter_context == 'view') {
+
+	elgg_push_breadcrumb($title);
+
 	$content = elgg_view_entity($mandat, array('full_view' => true));
 	$content .= elgg_view_comments($mandat);
+
 } else if ($filter_context == 'candidats') {
+	
+	elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$mandat->guid}/{$mandat->title}");
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'));
+	
 	$content = elgg_list_entities_from_metadata(array(
 		'type' => 'object',
 		'subtypes' => 'candidat',
 		'metadata_name' => 'mandat_guid',
 		'metadata_value' => $mandat->guid,
 		'limit' => 30,
-		'full_view' => true,
+		'full_view' => false,
 		'pagination' => true
 	));
 	if (!$content) $content = elgg_echo('groups_admins_elections:candidats:none');
 } else if ($filter_context == 'history') {
+
+	elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$mandat->guid}/{$mandat->title}");
+	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandat:history'));
+	
 	$content = elgg_list_entities_from_metadata(array(
 		'type' => 'object',
 		'subtypes' => 'elected',

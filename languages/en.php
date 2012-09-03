@@ -26,6 +26,7 @@ $english = array(
 	'groups_admins_elections:candidat:new' => "Se porter candidat",
 	'groups_admins_elections:candidats' => "Candidats",
 	'groups_admins_elections:candidats:none' => "Personne ne s'est encore porté candidat. Faites-le !",
+	'groups_admins_elections:candidat:title' => "Candidature de %s",
 	'groups_admins_elections:candidat:title:new' => "Se porter candidat pour le mandat %s",
 	'groups_admins_elections:candidat:intro' => "Vous devez déclarer vos intentions et vos motivations pour votre candidature.",
 
@@ -46,7 +47,7 @@ $english = array(
 	'groups_admins_elections:mandat:next_election' => "Prochaine élection :",
 	'groups_admins_elections:mandat:next_election_date' => "%A %e %B %Y",
 	
-	'groups_admins_elections:candidat:created_by' => "%s s'est porté candidat",
+	'groups_admins_elections:candidat:created_by' => "s'est porté candidat",
 	
 	
 	/*

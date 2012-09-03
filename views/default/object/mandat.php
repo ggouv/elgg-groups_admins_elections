@@ -106,18 +106,18 @@ HTML;
 	} else {
 		$comments_link = '';
 	}
+		
+	$subtitle = "$author_text $date $comments_link";
+
+	$metadata = elgg_view_menu('entity', array(
+		'entity' => $vars['entity'],
+		'handler' => 'elections',
+		'sort_by' => 'priority',
+		'class' => 'elgg-menu-hz',
+	));
 
 	if ($full === true) {
-		
-		$subtitle = "$author_text $date $comments_link";
-	
-		$metadata = elgg_view_menu('entity', array(
-			'entity' => $vars['entity'],
-			'handler' => 'elections',
-			'sort_by' => 'priority',
-			'class' => 'elgg-menu-hz',
-		));
-	
+
 		$params = array(
 			'entity' => $mandat,
 			'metadata' => $metadata,
@@ -126,7 +126,7 @@ HTML;
 		);
 		$params = $params + $vars;
 		$summary = elgg_view('object/elements/summary', $params);
-		
+
 		$description = elgg_view('output/longtext', array('value' => $mandat->description, 'class' => 'pbs'));
 	
 		$body = <<<HTML
@@ -150,13 +150,6 @@ HTML;
 	} else { // brief view
 	
 		$excerpt = elgg_get_excerpt($mandat->description);
-	
-		$metadata = elgg_view_menu('entity', array(
-			'entity' => $vars['entity'],
-			'handler' => 'elections',
-			'sort_by' => 'priority',
-			'class' => 'elgg-menu-hz',
-		));
 		
 		$params = array(
 			'entity' => $mandat,

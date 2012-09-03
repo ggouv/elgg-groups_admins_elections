@@ -9,16 +9,15 @@
  *	Elgg-groups_admins_elections Object candidat
  *
  */
-
-$full = elgg_extract('full_view', $vars, FALSE);
-$candidat = elgg_extract('entity', $vars, FALSE);
+$full = elgg_extract('full_view', $vars, false);
+$candidat = elgg_extract('entity', $vars, false);
 
 if (!$candidat) {
 	return;
 }
 
 $owner = $candidat->getOwnerEntity();
-$owner_icon = elgg_view_entity_icon($owner, 'medium');
+$owner_icon = elgg_view_entity_icon($owner, 'small');
 $container = $candidat->getContainerEntity();
 
 $description = elgg_view('output/longtext', array('value' => $candidat->description, 'class' => 'pbs'));
@@ -28,7 +27,6 @@ $owner_link = elgg_view('output/url', array(
 	'text' => $owner->name,
 	'is_trusted' => true,
 ));
-$author_text = elgg_echo('groups_admins_elections:candidat:created_by', array($owner_link));
 
 $date = elgg_view_friendly_time($candidat->time_created);
 
@@ -54,16 +52,12 @@ $metadata = elgg_view_menu('entity', array(
 
 $subtitle = "$author_text $date $comments_link";
 
-// do not show the metadata and controls in widget view
-if (elgg_in_context('widgets')) {
-	$metadata = '';
-}
-
-if ($full === true) {
+if ($full) {
 	$params = array(
 		'entity' => $candidat,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
+		'title' => $owner_link
 	);
 	$params = $params + $vars;
 	$summary = elgg_view('object/elements/summary', $params);
@@ -81,41 +75,36 @@ HTML;
 		'body' => $body,
 	));
 
-} else if ($full == 'in_group_profile') {
-	$params = array(
-		'text' => $candidat->title,
-		'href' => $candidat->getURL(),
-		'is_trusted' => true,
-	);
-	$title_link = elgg_view('output/url', $params);
-
-	$body = <<<HTML
-<h3>$title_link</h3>
-HTML;
-
-	echo $body;
 } else {
 	// brief view
 	$excerpt = elgg_get_excerpt($candidat->description);
-	if ($excerpt) {
-		$excerpt = " - $excerpt";
-	}
-
-	$link = elgg_view('output/url', array(
-		'href' => $candidat->getURL(),
-		'text' => $display_text,
+	
+	$title_link = elgg_view('output/url', array(
+		'text' => elgg_echo('groups_admins_elections:candidat:created_by'),
+		'href' => $candidat->getURL() . "{$owner->name}",
+		'is_trusted' => true,
 	));
-
-	$content = $excerpt;
 
 	$params = array(
 		'entity' => $candidat,
 		'metadata' => $metadata,
-		'subtitle' => $subtitle,
-		'content' => $content,
+		'title' => $owner_link . '&nbsp;' . $title_link,
+		'subtitle' => $date . '&nbsp;' . $comments_link,
 	);
 	$params = $params + $vars;
-	$body = elgg_view('object/elements/summary', $params);
+	$summary = elgg_view('object/elements/summary', $params);
 	
-	echo elgg_view_image_block($owner_icon, $body);
+	$body = <<<HTML
+<div class="candidat elgg-content">
+	$excerpt
+</div>
+HTML;
+
+	echo elgg_view('object/elements/full', array(
+		'entity' => $candidat,
+		'icon' => $owner_icon,
+		'summary' => $summary,
+		'body' => $body,
+	));
+
 }

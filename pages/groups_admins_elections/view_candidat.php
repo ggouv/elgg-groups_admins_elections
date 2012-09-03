@@ -23,12 +23,12 @@ if (!$candidat || !$container) {
 	forward(REFERER);
 }
 
-$title = $candidat->title;
+$title = elgg_echo('groups_admins_elections:candidat:title', array($candidat_user->name));
 
-elgg_push_breadcrumb('groups_admins_elections:mandats', 'elections/all');
+elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
 elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
-elgg_push_breadcrumb($mandat->title, "elections/mandat/{$mandat->guid}/{$mandat->title}");
-elgg_push_breadcrumb('groups_admins_elections:candidats', "elections/candidats/{$mandat->guid}/{$mandat->title}");
+elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$mandat->guid}/{$mandat->title}");
+elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'), "elections/mandat/candidats/{$mandat->guid}/{$mandat->title}");
 elgg_push_breadcrumb($candidat_user->name);
 
 $content = elgg_view_entity($candidat, array('full_view' => true));
