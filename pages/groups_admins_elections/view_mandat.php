@@ -88,8 +88,8 @@ if ($filter_context == 'view') {
 	$content = elgg_list_entities_from_metadata(array(
 		'type' => 'object',
 		'subtypes' => 'elected',
-		/*'metadata_name' => 'mandat_guid',
-		'metadata_value' => $mandat->guid,*/
+		'metadata_name' => 'mandat_guid',
+		'metadata_value' => $mandat->guid,
 		'limit' => 30,
 		'full_view' => true,
 		'pagination' => true

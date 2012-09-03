@@ -32,13 +32,13 @@ if (!$current_elected) {
 	$owner_elected_icon = '<span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:not_elected') . '</span>';
 } else {
 	$owner_elected = get_entity($current_elected[0]->owner_guid);
-	$owner_elected_icon = elgg_view_entity_icon($owner_elected, 'small', array('class' => 'float mrs'));
+	$owner_elected_icon = elgg_view_entity_icon($owner_elected, 'small', array('class' => 'float mrs mts'));
 	$owner_elected_view = elgg_view('output/url', array(
 				'text' => $owner_elected->name,
 				'value' => $owner_elected->getURL(),
 				'is_trusted' => true,
 			));
-	$mandat_occuby_by = '<div class="mbs">' . elgg_echo('groups_admins_elections:mandat:occupy_by') . '</div>' . $owner_elected_icon . $owner_elected_view;
+	$mandat_occuby_by = '<div>' . elgg_echo('groups_admins_elections:mandat:occupy_by') . '</div>' . $owner_elected_icon . $owner_elected_view;
 }
 
 if ($full === 'in_group_profile') {
@@ -51,7 +51,7 @@ if ($full === 'in_group_profile') {
 	$title_link = elgg_view('output/url', $params);
 
 	$body = <<<HTML
-	<h3 class="mbs">$title_link</h3>
+	<h3>$title_link</h3>
 	$owner_elected_icon $owner_elected_view
 HTML;
 
@@ -60,9 +60,7 @@ HTML;
 } else {
 
 	if ($current_elected) {
-		$user = elgg_get_logged_in_user_entity();
-		setlocale(LC_TIME, $user->language, strtolower($user->language) . '_' . strtoupper($user->language));
-		$mandat_next_election = strftime(elgg_echo('groups_admins_elections:mandat:next_election_date'), $current_elected[0]->end_mandat);
+		$mandat_next_election = date_next_election($current_elected[0]->end_mandat);
 	}
 	
 	$candidats_count = elgg_get_entities_from_metadata(array(

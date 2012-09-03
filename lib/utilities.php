@@ -81,3 +81,22 @@ function candidat_prepare_form_vars($candidat = null) {
 
 	return $values;
 }
+
+
+/**
+ * Prepare date for output
+ *
+ * @param integer timestamp of metadata "end_mandat" of Object mandat 
+ * @return array
+ */
+function date_next_election($date, $echo = 'groups_admins_elections:mandat:next_election_date') {
+	$user = elgg_get_logged_in_user_entity();
+	setlocale(LC_TIME, $user->language, strtolower($user->language) . '_' . strtoupper($user->language));
+	$mandat_next_election = strftime(elgg_echo($echo), $date);
+		
+	if ($date < time()) {
+		return '<span class="election-overdue">' . $mandat_next_election . '</span>';
+	} else {
+		return $mandat_next_election;
+	}
+}
