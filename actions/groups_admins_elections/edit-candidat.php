@@ -69,7 +69,7 @@ if ($candidat->save()) {
 
 	elgg_clear_sticky_form('candidat');
 
-	system_message(elgg_echo('groups_admins_elections:candidat:save:success').$mandat_guid);
+	system_message(elgg_echo('groups_admins_elections:candidat:save:success'));
 
 	if ($new) {
 		add_to_river('river/object/candidat/create','create', $user_guid, $candidat->getGUID());

@@ -47,6 +47,11 @@ function groups_admins_elections_init() {
 	elgg_register_entity_url_handler('object', 'candidat', 'candidat_url');
 
 	// Register entity menu
+	
+	// write permission plugin hooks
+	elgg_register_plugin_hook_handler('permissions_check', 'group', 'groups_admins_elections_permission_check');
+	/*elgg_register_plugin_hook_handler('container_permissions_check', 'all', 'ggouv_template_permission_check');
+	elgg_register_plugin_hook_handler('access:collections:read', 'user', 'ggouv_template_permission_check');*/
 
 }
 
@@ -130,4 +135,55 @@ function candidat_url($entity) {
 	$title = $entity->title;
 	$title = elgg_get_friendly_title($title);
 	return elgg_get_site_url() . "elections/candidat/" . $entity->getGUID() . "/" . $title;
+}
+
+
+/**
+ * Let's user mandated writing to group.
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $entity_type
+ * @param unknown_type $returnvalue
+ * @param unknown_type $params
+ */
+function groups_admins_elections_permission_check($hook, $entity_type, $returnvalue, $params) {
+	if (!$returnvalue && isset($params['entity']) && isset($params['user'])) {
+		if (is_user_group_admin($params['user'], $params['entity'])) return true;
+	}
+	return $returnvalue;
+}
+
+/**
+ * Check if user is mandated.
+ *
+ * @param ElggUser $user
+ * @param ElggGroup $group
+ *
+ *@return ElggObject $mandat
+ *
+ * @todo check if we need to cache this
+ */
+function is_user_group_admin($user = 0, $group = 0) {
+	if (!$user) {
+		$user = elgg_get_logged_in_user_entity();
+	}
+	if (!$group) {
+		$user = elgg_get_page_owner_entity();
+	}
+	$list_mandats = elgg_get_entities(array(
+		'type' => 'object',
+		'subtype' => 'mandat',
+		'container_guid' => $group->guid,
+	));
+	foreach ($list_mandats as $mandat) {
+		$current_elected = elgg_get_entities_from_metadata(array(
+			'type' => 'object',
+			'subtypes' => 'elected',
+			'metadata_name' => 'mandat_guid',
+			'metadata_value' => $mandat->guid,
+			'limit' => 1,
+		));
+		if ($user->guid == $current_elected[0]->owner_guid) return $current_elected[0];
+	}
+	return false;
 }
