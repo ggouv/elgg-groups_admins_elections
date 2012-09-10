@@ -13,7 +13,8 @@
 // access check for closed groups
 group_gatekeeper();
 
-$group = elgg_get_page_owner_entity();
+$group_guid = get_input('guid', elgg_get_page_owner_entity());
+$group = get_entity($group_guid);
 $user = elgg_get_logged_in_user_entity();
 
 if (!$group || $group->type != 'group') {

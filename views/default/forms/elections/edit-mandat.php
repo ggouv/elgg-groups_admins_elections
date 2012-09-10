@@ -17,7 +17,6 @@ $desc = elgg_extract('description', $vars, '');
 $duration = elgg_extract('duration', $vars, 15);
 $container_guid = elgg_extract('container_guid', $vars);
 $guid = elgg_extract('guid', $vars, null);
-global $fb; $fb->info($title, 'ép');
 ?>
 
 <div>

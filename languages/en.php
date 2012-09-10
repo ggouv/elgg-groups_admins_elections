@@ -22,6 +22,7 @@ $english = array(
 	'groups_admins_elections:mandat:history' => "Historique",
 	'groups_admins_elections:mandat:edit' => "Modifier",
 	'groups_admins_elections:mandat:title:edit' => "Modifier le mandat %s",
+	'groups_admins_elections:mandats:do_elect' => "Êtes-vous sûr de lancer le tirage au sort maintenant ?",
 	
 	'groups_admins_elections:candidat:new' => "Se porter candidat",
 	'groups_admins_elections:candidat:mine' => "Ma candidature",
@@ -29,11 +30,14 @@ $english = array(
 	'groups_admins_elections:candidats:none' => "Personne ne s'est encore porté candidat. Faites-le !",
 	'groups_admins_elections:candidat:title' => "Candidature de %s",
 	'groups_admins_elections:candidat:title:new' => "Se porter candidat pour le mandat %s",
-	'groups_admins_elections:candidat:intro' => "Vous devez déclarer vos intentions et vos motivations pour votre candidature.",
+	'groups_admins_elections:candidat:intro' => "Vous devez déclarer vos motivations pour votre candidature.",
 	'groups_admins_elections:candidat:edit' => "Modifier",
 	'groups_admins_elections:candidat:title:edit' => "Modifier la candidature de %s",
 
-	'groups_admins_elections:elected:none' => "Il n'y a pas encore eu d'élection.",
+	'groups_admins_elections:elected:none' => "Il n'y a pas encore eu de tirage au sort.",
+	'groups_admins_elections:elected:date' => "%d/%m/%Y",
+	'groups_admins_elections:elected:title' => "Mandataire du %s au %s",
+	'groups_admins_elections:elected_now:title' => "Mandataire depuis le %s",
 	
 	'groups_admins_elections:list:none' => "Il n'y a aucun mandat.",
 	
@@ -46,13 +50,16 @@ $english = array(
 	'groups_admins_elections:mandat:duration:day' => "%s jours",
 	'groups_admins_elections:mandat:not_enougth_candidats' => "Pas assez de candidats pour le tirage au sort",
 	'groups_admins_elections:mandat:not_elected' => "Pas assez de candidats.<br/>Inscrivez-vous !",
-	'groups_admins_elections:mandat:occupy_by' => "Mandat occupé par :",
-	'groups_admins_elections:mandat:next_election' => "Prochaine élection :",
+	'groups_admins_elections:mandat:occupy_by' => "Mandataire actuel :",
+	'groups_admins_elections:mandat:next_election' => "Prochain tirage au sort :",
 	'groups_admins_elections:mandat:next_election_date' => "%A %e %B %Y",
 	'groups_admins_elections:mandat:tiny_next_election_date' => "%d-%m-%y",
 	'groups_admins_elections:mandat:until' => "Jusqu'au",
 	
 	'groups_admins_elections:candidat:created_by' => "s'est porté candidat",
+	
+	'groups_admins_elections:elected:is' => " est ",
+	'groups_admins_elections:elected:fromto' => " a été ",
 	
 	
 	/*

@@ -55,7 +55,7 @@ $subtitle = "$author_text $date $comments_link";
 if ($full) {
 	$params = array(
 		'entity' => $elected,
-		'metadata' => $metadata,
+		//'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'title' => $owner_link
 	);
@@ -79,16 +79,23 @@ HTML;
 	// brief view
 	$excerpt = elgg_get_excerpt($elected->description);
 	
+	$elected_now = gae_get_elected($mandat->guid);
+	if ($elected == $elected_now) {
+		$title = elgg_echo('groups_admins_elections:elected:is') . lcfirst(elgg_echo('groups_admins_elections:elected_now:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created))));
+	} else {
+		$title = elgg_echo('groups_admins_elections:elected:fromto') . lcfirst(elgg_echo('groups_admins_elections:elected:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created), strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated))));
+	}
+	
 	$title_link = elgg_view('output/url', array(
-		'text' => elgg_echo('groups_admins_elections:elected:created_by'),
+		'text' => $title,
 		'href' => $elected->getURL() . "{$owner->name}",
 		'is_trusted' => true,
 	));
 
 	$params = array(
 		'entity' => $elected,
-		'metadata' => $metadata,
-		'title' => $owner_link . '&nbsp;' . $title_link,
+		//'metadata' => $metadata,
+		'title' => $owner_link . $title_link,
 		'subtitle' => $date . '&nbsp;' . $comments_link,
 	);
 	$params = $params + $vars;

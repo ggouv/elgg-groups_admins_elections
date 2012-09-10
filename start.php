@@ -45,6 +45,7 @@ function groups_admins_elections_init() {
 	// Register a URL handler for mandat and candidat
 	elgg_register_entity_url_handler('object', 'mandat', 'mandat_url');
 	elgg_register_entity_url_handler('object', 'candidat', 'candidat_url');
+	elgg_register_entity_url_handler('object', 'elected', 'elected_url');
 
 	// Register entity menu
 	
@@ -82,9 +83,17 @@ function groups_admins_elections_handler($page) {
 			set_input('guid', $page[2]);
 			include "$base_dir/view_mandat.php";
 			break;
+		case 'mandats':
+			set_input('guid', $page[1]);
+			include "$base_dir/mandats.php";
+			break;
 		case 'candidat':
 			set_input('guid', $page[1]);
 			include "$base_dir/view_candidat.php";
+			break;
+		case 'elected':
+			set_input('guid', $page[1]);
+			include "$base_dir/view_elected.php";
 			break;
 		case 'add':
 			set_input('guid', $page[1]);
@@ -93,16 +102,6 @@ function groups_admins_elections_handler($page) {
 		case 'edit':
 			set_input('guid', $page[1]);
 			include "$base_dir/edit.php";
-			break;
-		case 'group':
-			switch ($page[2]) {
-				case 'mandats';
-					include "$base_dir/mandats.php";
-					break;
-				case 'candidats';
-					include "$base_dir/group.php";
-					break;
-			}
 			break;
 	}
 
@@ -135,6 +134,19 @@ function candidat_url($entity) {
 	$title = $entity->title;
 	$title = elgg_get_friendly_title($title);
 	return elgg_get_site_url() . "elections/candidat/" . $entity->getGUID() . "/" . $title;
+}
+
+
+/**
+ * Populates the ->getUrl() method for elected objects
+ *
+ * @param ElggEntity $entity The elected object
+ * @return string elected item URL
+ */
+function elected_url($entity) {
+	$title = $entity->title;
+	$title = elgg_get_friendly_title($title);
+	return elgg_get_site_url() . "elections/elected/" . $entity->getGUID() . "/" . $title;
 }
 
 

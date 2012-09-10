@@ -22,7 +22,7 @@ group_gatekeeper();
 
 elgg_push_breadcrumb('groups_admins_elections:mandats');
 elgg_push_breadcrumb($group->name);
-global $fb; $fb->info(elgg_get_page_owner_entity());
+
 elgg_register_title_button();
 
 $title = elgg_echo('groups_admins_elections:owner', array($group->name));

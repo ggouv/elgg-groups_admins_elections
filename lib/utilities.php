@@ -154,7 +154,7 @@ function gae_check_user_can_candidate($mandat, $user_guid = null) {
 	if (!$user_guid) $user_guid = elgg_get_logged_in_user_guid();
 	
 	// is mandated in the group ?
-	if (check_entity_relationship($user_guid,'elected_in',$mandat->container_guid)) {
+	if (check_entity_relationship($user_guid, 'elected_in', $mandat->container_guid)) {
 		return false;
 	}
 	// Already candidat ?

@@ -27,10 +27,10 @@ if (!$user_guid || !$mandat || !$container || !in_array($filter_context, array('
 $title = $mandat->title;
 
 elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
-elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
+elgg_push_breadcrumb($container->name, "elections/mandats/{$container->guid}/{$container->name}");
 
 $candidated = gae_check_user_can_candidate($mandat, $user_guid);
-global $fb; $fb->info($candidated);
+
 if ($container->canWritetoContainer() && $candidated === true) {
 	elgg_register_menu_item('title', array(
 		'name' => 'groups_admins_elections_candidats_add',
@@ -52,6 +52,7 @@ if ($container->canEdit() && gae_get_candidats($mandat->guid, true) >= 3) {
 		'name' => 'groups_admins_elections_mandats_elect',
 		'href' => elgg_add_action_tokens_to_url("action/elections/elect?guid=$mandat_guid"),
 		'text' => elgg_echo('groups_admins_elections:mandats:elect'),
+		'confirm' => elgg_echo('groups_admins_elections:mandats:do_elect'),
 		'link_class' => 'elgg-button elgg-button-action group_admin_only gwfb',
 	));
 }
@@ -90,7 +91,7 @@ if ($filter_context == 'view') {
 		'metadata_value' => $mandat->guid,
 		'order_by' => 'time_updated desc',
 		'limit' => 30,
-		'full_view' => true,
+		'full_view' => false,
 		'pagination' => true
 	));
 	if (!$content) $content = elgg_echo('groups_admins_elections:elected:none');
