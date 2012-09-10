@@ -19,10 +19,18 @@ $list_mandats = elgg_get_entities(array(
 	'subtype' => 'mandat',
 	'container_guid' => $group_guid,
 ));
-
-foreach ($list_mandats as $item) {
-	$html .= "<li id=\"elgg-{$item->getType()}-{$item->getGUID()}\" class='mandats'>";
-	$html .= elgg_view_list_item($item, array('full_view' => 'in_group_profile'));
-	$html .= '</li>';
+if ($list_mandats) {
+	foreach ($list_mandats as $item) {
+		$html .= "<li id=\"elgg-{$item->getType()}-{$item->getGUID()}\" class='mandats'>";
+		$html .= elgg_view_list_item($item, array('full_view' => 'in_group_profile'));
+		$html .= '</li>';
+	}
+} else {
+	$html = elgg_view('output/url', array(
+		'href' => elgg_get_site_url() . "elections/add/{$group_guid}",
+		'text' => elgg_echo('groups_admins_elections:mandats:add'),
+		'class' => 'elgg-button elgg-button-action group_admin_only gwfb',
+		'is_trusted' => false,
+	));
 }
 echo $html;

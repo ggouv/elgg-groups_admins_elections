@@ -148,7 +148,7 @@ function candidat_url($entity) {
  */
 function groups_admins_elections_permission_check($hook, $entity_type, $returnvalue, $params) {
 	if (!$returnvalue && isset($params['entity']) && isset($params['user'])) {
-		if (is_user_group_admin($params['user'], $params['entity'])) return true;
+		if (check_entity_relationship($params['user']->guid, 'elected_in', $params['entity']->guid)) return true;
 	}
 	return $returnvalue;
 }

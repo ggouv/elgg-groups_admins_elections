@@ -75,6 +75,10 @@ if ($candidat->save()) {
 		add_to_river('river/object/candidat/create','create', $user_guid, $candidat->getGUID());
 	}
 	
+	$params['mandat'] = $mandat_guid;
+	$params['election_triggered_by'] = $user_guid;
+	elgg_trigger_plugin_hook('election', 'bycandidat', $params);
+	
 	forward($candidat->getURL());
 } else {
 	register_error(elgg_echo('groups_admins_elections:candidat:save:fail'));

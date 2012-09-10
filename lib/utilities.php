@@ -86,10 +86,10 @@ function candidat_prepare_form_vars($candidat = null) {
 /**
  * Prepare date for output
  *
- * @param integer timestamp of metadata "end_mandat" of Object mandat 
+ * @param integer $date timestamp of metadata "end_mandat" of Object mandat 
  * @return array
  */
-function date_next_election($date, $echo = 'groups_admins_elections:mandat:next_election_date') {
+function gae_get_date_next_election($date, $echo = 'groups_admins_elections:mandat:next_election_date') {
 	$user = elgg_get_logged_in_user_entity();
 	setlocale(LC_TIME, $user->language, strtolower($user->language) . '_' . strtoupper($user->language));
 	$mandat_next_election = strftime(elgg_echo($echo), $date);
@@ -98,5 +98,132 @@ function date_next_election($date, $echo = 'groups_admins_elections:mandat:next_
 		return '<span class="election-overdue">' . $mandat_next_election . '</span>';
 	} else {
 		return $mandat_next_election;
+	}
+}
+
+
+/**
+ * Get all candidats for a mandat
+ *
+ * @param int $mandat_guid GUID of the mandat 
+ * @return array(ElggUsers) candidats
+ */
+function gae_get_candidats($mandat_guid, $count = false) {
+	return elgg_get_entities_from_metadata(array(
+		'type' => 'object',
+		'subtypes' => 'candidat',
+		'metadata_name' => 'mandat_guid',
+		'metadata_value' => $mandat_guid,
+		'limit' => 0,
+		'count' => $count ? true : false,
+	));
+}
+
+
+/**
+ * Get current elected for a mandat
+ *
+ * @param int $mandat_guid GUID of the mandat 
+ * @return array(ElggObject) elected
+ */
+function gae_get_elected($mandat_guid) {
+	$current_elected = elgg_get_entities_from_metadata(array(
+		'type' => 'object',
+		'subtypes' => 'elected',
+		'metadata_name' => 'mandat_guid',
+		'metadata_value' => $mandat_guid,
+		'order_by' => 'time_updated desc',
+		'limit' => 1,
+	));
+	if ($current_elected) {
+		return $current_elected[0];
+	} else {
+		return false;
+	}
+}
+
+
+/**
+ * Check if an user can be candidat
+ *
+ * @param ElggObject $mandat the mandat
+ * @param int $user_guid GUID of the user (default logged in user)
+ * @return array(ElggUser) candidated or true if can or false if already mandated
+ */
+function gae_check_user_can_candidate($mandat, $user_guid = null) {
+	if (!$user_guid) $user_guid = elgg_get_logged_in_user_guid();
+	
+	// is mandated in the group ?
+	if (check_entity_relationship($user_guid,'elected_in',$mandat->container_guid)) {
+		return false;
+	}
+	// Already candidat ?
+	$candidated = elgg_get_entities_from_metadata(array(
+		'type' => 'object',
+		'subtype' => 'candidat',
+		'owner_guid' => $user_guid,
+		'metadata_name' => 'mandat_guid',
+		'metadata_value' => $mandat->guid,
+		'limit' => 0,
+	));
+	if (count($candidated) >= 1) return $candidated[0];
+	
+	return true;
+}
+
+
+/**
+ * Perform election
+ *
+ * @param ElggObject $mandat mandat to perform election
+ * @param int $triggered_by GUID of user who perform election
+ * @param bool $first_election (default false) set true if this is the first election for this mandat
+ * @return ElggUser candidat elected
+ */
+function gae_perform_election($mandat, $triggered_by, $first_election = false) {
+	global $CONFIG;
+	
+	$group = get_entity($mandat->container_guid);
+	
+	$candidats = gae_get_candidats($mandat->guid);
+
+	$count_candidats = count($candidats);
+	if ($count_candidats < 3) { // @todo put in settings ?
+		return false;
+	}
+	
+	$current_elected = gae_get_elected($mandat->guid);
+	
+	// make sorted election
+	shuffle($candidats); // randomizes the order of the elements in the array
+	$elected = $candidats[mt_rand(0, $count_candidats-1)]; // get a random item
+	
+	$subtype_id = add_subtype('object', 'elected');
+	$time = time();
+	
+	$result = update_data("UPDATE {$CONFIG->dbprefix}entities
+							SET subtype = '$subtype_id', time_updated = $time, last_action = $time
+							WHERE {$CONFIG->dbprefix}entities.guid = {$elected->guid}");
+	
+	if ($result) {
+		create_metadata($elected->guid, 'end_mandat', $time + ($mandat->duration * 24 * 60 * 60), 'integer', $elected->owner_guid, 2);
+		create_metadata($elected->guid, 'nbr_candidats', $count_candidats, 'integer', $elected->owner_guid, 2);
+		if ($first_election) create_metadata($elected->guid, 'first_election', true, $elected->owner_guid, 2);
+		$elected->addRelationship($triggered_by, 'election_triggered_by');
+
+		
+		remove_entity_relationship($current_elected->owner_guid, 'elected_in', $group->guid);
+		$user_elected = get_entity($elected->owner_guid);
+		$user_elected->addRelationship($group->guid, 'elected_in');
+		
+		$user_elected = get_entity($elected->owner_guid);
+		system_message(elgg_echo('groups_admins_elections:elect:success', array($user_elected->name)));
+		
+		add_to_river('river/object/elected/create','create', $user_elected->owner_guid, $elected);
+	
+		return $elected;
+	} else {
+		register_error(elgg_echo('groups_admins_elections:elect:fail'));
+		return false;
 	}
 }

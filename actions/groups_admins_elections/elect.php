@@ -25,50 +25,15 @@ if (!$mandat) {
 $group = get_entity($mandat->container_guid);
 
 if (!$group || !$group->canEdit()) {
-	register_error(elgg_echo('groups_admins_elections:elect:fail'. $mandat->canEdit()));
-	forward(REFERER);
-}
-
-$candidats = elgg_get_entities_from_metadata(array(
-	'type' => 'object',
-	'subtypes' => 'candidat',
-	'metadata_name' => 'mandat_guid',
-	'metadata_value' => $mandat->guid,
-	'limit' => 0,
-));
-
-if (count($candidats) < 3) { // @todo put in settings ?
-	register_error(elgg_echo('groups_admins_elections:mandat:not_enougth_candidats'));
-	forward(REFERER);
-}
-
-// make sorted election
-shuffle($candidats); // randomizes the order of the elements in the array
-$elected_now = $candidats[mt_rand(0, count($candidats)-1)]; // get a random item
-
-
-$elected = new ElggObject;
-$elected->subtype = 'elected';
-$elected->container_guid = $group->guid;
-$elected->owner_guid = $elected_now->owner_guid;
-$elected->mandat_guid = $mandat->guid;
-$elected->access_id = $group->access_id;
-$elected->end_mandat = time() + ($mandat->duration * 24 * 60 * 60);
-$elected->description = $elected_now->description;
-$elected->nbr_candidats = count($candidats);
-$elected->election_triggered_by = $user_guid;
-
-if ($elected->save()) {
-
-	delete_entity($elected_now->guid);
-
-	$user_elected = get_entity($elected->owner_guid);
-	system_message(elgg_echo('groups_admins_elections:elect:success', array($user_elected->name)));
-	
-	add_to_river('river/object/elected/create','create', $elected->owner_guid, $elected->getGUID());
-	
-	forward("elections/mandat/history/{$mandat->guid}/{$mandat->title}");
-} else {
 	register_error(elgg_echo('groups_admins_elections:elect:fail'));
+	forward(REFERER);
+}
+
+elgg_load_library('groups_admins_elections:utilities');
+$elected = gae_perform_election($mandat, $user_guid, true);
+
+if ($elected) {
+	forward($elected->getURL());
+} else {
 	forward(REFERER);
 }

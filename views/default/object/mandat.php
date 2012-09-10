@@ -17,13 +17,9 @@ if (!$mandat) {
 	return;
 }
 
-$current_elected = elgg_get_entities_from_metadata(array(
-	'type' => 'object',
-	'subtypes' => 'elected',
-	'metadata_name' => 'mandat_guid',
-	'metadata_value' => $mandat->guid,
-	'limit' => 1,
-));
+elgg_load_library('groups_admins_elections:utilities'); // for view displayed on group profile we need to load this library
+
+$current_elected = gae_get_elected($mandat->guid);
 
 $mandat_next_election_string = elgg_echo('groups_admins_elections:mandat:next_election');
 
@@ -31,7 +27,7 @@ if (!$current_elected) {
 	$mandat_next_election = elgg_echo('groups_admins_elections:mandat:not_enougth_candidats');
 	$owner_elected_icon = '<span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:not_elected') . '</span>';
 } else {
-	$owner_elected = get_entity($current_elected[0]->owner_guid);
+	$owner_elected = get_entity($current_elected->owner_guid);
 	$owner_elected_icon = elgg_view_entity_icon($owner_elected, 'small', array('class' => 'float mrs mts'));
 	$owner_elected_view = elgg_view('output/url', array(
 				'text' => $owner_elected->name,
@@ -42,11 +38,10 @@ if (!$current_elected) {
 }
 
 if ($full === 'in_group_profile') {
-	
+
 	if ($current_elected) {
-		elgg_load_library('groups_admins_elections:utilities'); // this view is displayed on group profile, so we need to load this library
 		$mandat_next_election_tiny = '<br/><span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:until') . '</span><br/><span class="elgg-river-timestamp date">' .
-			date_next_election($current_elected[0]->end_mandat, 'groups_admins_elections:mandat:tiny_next_election_date') . '</span>';
+			gae_get_date_next_election($current_elected->end_mandat, 'groups_admins_elections:mandat:tiny_next_election_date') . '</span>';
 	}
 	
 	$params = array(
@@ -66,17 +61,10 @@ HTML;
 } else {
 
 	if ($current_elected) {
-		$mandat_next_election = date_next_election($current_elected[0]->end_mandat);
+		$mandat_next_election = gae_get_date_next_election($current_elected->end_mandat);
 	}
 	
-	$candidats_count = elgg_get_entities_from_metadata(array(
-		'type' => 'object',
-		'subtypes' => 'candidat',
-		'metadata_name' => 'mandat_guid',
-		'metadata_value' => $mandat->guid,
-		'limit' => 0,
-		'count' => true
-	));
+	$candidats_count = gae_get_candidats($mandat->guid, true);
 	$candidats_count_string = elgg_echo('groups_admins_elections:mandat:nbr_candidats', array('<span>' . $candidats_count . '</span>'));
 	$candidats_count_url = elgg_view('output/url', array(
 		'href' => "elections/mandat/candidats/{$mandat->guid}/{$mandat->title}",

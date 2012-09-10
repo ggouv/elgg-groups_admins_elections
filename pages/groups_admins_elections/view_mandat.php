@@ -29,27 +29,25 @@ $title = $mandat->title;
 elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
 elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
 
-$candidated = elgg_get_entities_from_metadata(array(
-	'type' => 'object',
-	'subtype' => 'candidat',
-	'container_guid' => $container->guid,
-	'owner_guid' => $user_guid,
-	'metadata_name' => 'mandat_guid',
-	'metadata_value' => $mandat->guid,
-	'limit' => 0,
-	'count' => true
-));
-
-if ($container->canWritetoContainer() && $candidated == 0) {
+$candidated = gae_check_user_can_candidate($mandat, $user_guid);
+global $fb; $fb->info($candidated);
+if ($container->canWritetoContainer() && $candidated === true) {
 	elgg_register_menu_item('title', array(
 		'name' => 'groups_admins_elections_candidats_add',
 		'href' => "elections/add/$mandat_guid",
 		'text' => elgg_echo('groups_admins_elections:candidats:add'),
 		'link_class' => 'elgg-button elgg-button-action gwfb',
 	));
+} else if ($candidated) {
+	elgg_register_menu_item('title', array(
+		'name' => 'groups_admins_elections_candidat_mine',
+		'href' => $candidated->getURL() . $candidated->getOwnerEntity()->name,
+		'text' => elgg_echo('groups_admins_elections:candidat:mine'),
+		'link_class' => 'elgg-button elgg-button-action gwfb',
+	));
 }
 
-if ($container->canEdit()) {
+if ($container->canEdit() && gae_get_candidats($mandat->guid, true) >= 3) {
 	elgg_register_menu_item('title', array(
 		'name' => 'groups_admins_elections_mandats_elect',
 		'href' => elgg_add_action_tokens_to_url("action/elections/elect?guid=$mandat_guid"),
@@ -90,6 +88,7 @@ if ($filter_context == 'view') {
 		'subtypes' => 'elected',
 		'metadata_name' => 'mandat_guid',
 		'metadata_value' => $mandat->guid,
+		'order_by' => 'time_updated desc',
 		'limit' => 30,
 		'full_view' => true,
 		'pagination' => true

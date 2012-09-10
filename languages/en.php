@@ -15,8 +15,6 @@ $english = array(
 	/*
 	 * Menu items and titles
 	 */
-	'elections:add' => "Add",
-	
 	'groups_admins_elections:mandat:new' => "Nouveau mandat",
 	'groups_admins_elections:mandat:title:new' => "Créer un nouveau mandat pour le groupe %s",
 	'groups_admins_elections:mandat' => "Mandat",
@@ -26,6 +24,7 @@ $english = array(
 	'groups_admins_elections:mandat:title:edit' => "Modifier le mandat %s",
 	
 	'groups_admins_elections:candidat:new' => "Se porter candidat",
+	'groups_admins_elections:candidat:mine' => "Ma candidature",
 	'groups_admins_elections:candidats' => "Candidats",
 	'groups_admins_elections:candidats:none' => "Personne ne s'est encore porté candidat. Faites-le !",
 	'groups_admins_elections:candidat:title' => "Candidature de %s",
