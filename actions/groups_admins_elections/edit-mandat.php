@@ -62,7 +62,7 @@ if ($mandat->save()) {
 
 	add_to_river('river/object/mandat/create','create', $user_guid, $mandat->getGUID());
 
-	forward(elgg_get_site_url() . "elections/group/$container_guid/mandats");
+	forward($mandat->getURL());
 } else {
 	register_error(elgg_echo('groups_admins_elections:mandat:save:fail'));
 	forward(REFERER);

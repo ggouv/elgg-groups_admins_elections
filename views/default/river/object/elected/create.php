@@ -49,15 +49,10 @@ if ($container instanceof ElggGroup) {
 
 $summary = elgg_echo('river:create:object:elected', array($subject_link, $object_link, $mandat_link, $group_string));
 
-$election_triggered_by = get_entity($object->election_triggered_by);
-$election_triggered_by_link = elgg_view('output/url', array(
-	'href' => $election_triggered_by->getURL(),
-	'text' => $election_triggered_by->name,
-	'class' => 'elgg-river-object',
-	'is_trusted' => true,
-));
+$elected = get_entity($object->owner_guid);
 
-$message = elgg_echo('river_elected_message', array($election_triggered_by_link, $object->nbr_candidats));
+$message = elgg_echo('river_elected_message', array('@' . $elected->name, $object->nbr_candidats));
+if ($object->first_election) $message .= '<span class="elgg-subtext">&nbsp;' . elgg_echo('river_elected_message:first_election') . '</span>';
 
 echo elgg_view('river/elements/layout', array(
 	'item' => $vars['item'],

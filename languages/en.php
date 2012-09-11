@@ -76,8 +76,9 @@ $english = array(
 	'river:create:object:candidat' => "%s s'est %s pour le mandat de %s %s",
 	'river_be_candidat' => "porté candidat",
 	'river:create:object:elected' => "%s %s pour le mandat de %s %s",
-	'river_elected' => "a été tiré au sort",
-	'river_elected_message' => "Tirage au sort lancé par %s entre %s candidats.",
+	'river_elected' => "a lancé le tirage au sort",
+	'river_elected_message' => "%s a été tiré au sort parmi %s candidats !",
+	'river_elected_message:first_election' => "Tirage au sort lancé automatiquement pour la première élection.",
 	
 	/*
 	 * Form fields

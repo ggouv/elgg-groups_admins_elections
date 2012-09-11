@@ -37,7 +37,7 @@ if (!$entity) {
 	}
 
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'));
-	elgg_push_breadcrumb($container->name, "elections/group/{$container->guid}/mandats");
+	elgg_push_breadcrumb($container->name, "elections/mandats/{$container->guid}/{$container->name}");
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandat:new'));
 	
 	$title = elgg_echo('groups_admins_elections:mandat:title:new', array($container->name));

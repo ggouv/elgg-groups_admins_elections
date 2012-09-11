@@ -34,7 +34,7 @@ if (!$entity) {
 	forward(REFERER);
 } else if ($entity->subtype == get_subtype_id('object', 'mandat')) {
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
-	elgg_push_breadcrumb($group->name, "elections/group/{$group->guid}/mandats");
+	elgg_push_breadcrumb($group->name, "elections/mandats/{$group->guid}/{$group->name}");
 	elgg_push_breadcrumb($entity->title, "elections/mandat/view/{$entity->guid}/{$entity->title}");
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandat:edit'));
 	
@@ -46,7 +46,7 @@ if (!$entity) {
 	$mandat = get_entity($entity->mandat_guid);
 	$owner = get_entity($entity->owner_guid);
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');
-	elgg_push_breadcrumb($group->name, "elections/group/{$group->guid}/mandats");
+	elgg_push_breadcrumb($group->name, "elections/mandats/{$group->guid}/{$group->name}");
 	elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$entity->mandat_guid}/{$mandat->title}");
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'), "elections/mandat/candidats/{$entity->mandat_guid}/{$mandat->title}");
 	elgg_push_breadcrumb($owner->name, $entity->getURL());

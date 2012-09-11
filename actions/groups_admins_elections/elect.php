@@ -33,6 +33,11 @@ elgg_load_library('groups_admins_elections:utilities');
 $elected = gae_perform_election($mandat, $user_guid, true);
 
 if ($elected) {
+	$user_elected = get_entity($elected->owner_guid);
+	system_message(elgg_echo('groups_admins_elections:elect:success', array($user_elected->name)));
+	
+	add_to_river('river/object/elected/create','create', $user_guid, $elected->guid);
+
 	forward($elected->getURL());
 } else {
 	forward(REFERER);

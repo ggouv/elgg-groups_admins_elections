@@ -18,6 +18,8 @@ $list_mandats = elgg_get_entities(array(
 	'type' => 'object',
 	'subtype' => 'mandat',
 	'container_guid' => $group_guid,
+	'limit' => 0,
+	'order_by' => 'time_created asc'
 ));
 if ($list_mandats) {
 	foreach ($list_mandats as $item) {

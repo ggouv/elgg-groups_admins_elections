@@ -201,25 +201,27 @@ function gae_perform_election($mandat, $triggered_by, $first_election = false) {
 	$subtype_id = add_subtype('object', 'elected');
 	$time = time();
 	
+	$user_elected = get_entity($elected->owner_guid);
+	$message = elgg_echo('river_elected_message', array('@' . $user_elected->name, $count_candidats));
+	if ($first_election) $message .= '<span class="elgg-subtext">&nbsp;' . elgg_echo('river_elected_message:first_election') . '</span>';
+	$description = $message . $elected->description;
+	
 	$result = update_data("UPDATE {$CONFIG->dbprefix}entities
 							SET subtype = '$subtype_id', time_updated = $time, last_action = $time
 							WHERE {$CONFIG->dbprefix}entities.guid = {$elected->guid}");
 	
-	if ($result) {
+	$result2 = update_data("UPDATE {$CONFIG->dbprefix}objects_entity
+							SET description = '$description'
+							WHERE {$CONFIG->dbprefix}objects_entity.guid = {$elected->guid}");
+	
+	if ($result && $result2) {
 		create_metadata($elected->guid, 'end_mandat', $time + ($mandat->duration * 24 * 60 * 60), 'integer', $elected->owner_guid, 2);
 		create_metadata($elected->guid, 'nbr_candidats', $count_candidats, 'integer', $elected->owner_guid, 2);
 		if ($first_election) create_metadata($elected->guid, 'first_election', true, $elected->owner_guid, 2);
 		$elected->addRelationship($triggered_by, 'election_triggered_by');
-
 		
 		remove_entity_relationship($current_elected->owner_guid, 'elected_in', $group->guid);
-		$user_elected = get_entity($elected->owner_guid);
 		$user_elected->addRelationship($group->guid, 'elected_in');
-		
-		$user_elected = get_entity($elected->owner_guid);
-		system_message(elgg_echo('groups_admins_elections:elect:success', array($user_elected->name)));
-		
-		add_to_river('river/object/elected/create','create', $user_elected->owner_guid, $elected);
 	
 		return $elected;
 	} else {

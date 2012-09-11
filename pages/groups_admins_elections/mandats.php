@@ -47,7 +47,7 @@ $content = elgg_list_entities(array(
 if (!$content) {
 	$content = elgg_echo('groups_admins_elections:list:none');
 }
-
+elgg_set_page_owner_guid($group_guid);
 $sidebar .= elgg_view('groups_admins_elections/sidebar');
 
 $params = array(
