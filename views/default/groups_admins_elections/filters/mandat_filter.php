@@ -16,27 +16,33 @@ $filter_context = elgg_get_context();
 $tabs = array(
 	'view' => array(
 		'text' => elgg_echo('groups_admins_elections:mandat'),
-		'href' => "elections/mandat/view/$mandat",
+		'href' => "elections/mandat/view/{$mandat->guid}/{$mandat->title}",
 		'selected' => ($filter_context == 'view'),
 		'priority' => 200,
 	),
 	'candidats' => array(
 		'text' => elgg_echo('groups_admins_elections:candidats'),
-		'href' => "elections/mandat/candidats/$mandat",
+		'href' => "elections/mandat/candidats/{$mandat->guid}/{$mandat->title}",
 		'selected' => ($filter_context == 'candidats'),
 		'priority' => 300,
 	),
 	'history' => array(
 		'text' => elgg_echo('groups_admins_elections:mandat:history'),
-		'href' => "elections/mandat/history/$mandat",
+		'href' => "elections/mandat/history/{$mandat->guid}/{$mandat->title}",
 		'selected' => ($filter_context == 'history'),
 		'priority' => 400,
 	),
 );
 
-foreach ($tabs as $name => $tab) {
-	$tab['name'] = $name;
-	
+if ($mandat->duration !=  '0') {
+	foreach ($tabs as $name => $tab) {
+		$tab['name'] = $name;
+		
+		elgg_register_menu_item('filter', $tab);
+	}
+} else {
+	$tab = $tabs['view'];
+	$tab['name'] = 'view';
 	elgg_register_menu_item('filter', $tab);
 }
 

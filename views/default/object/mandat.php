@@ -24,7 +24,7 @@ $current_elected = gae_get_elected($mandat->guid);
 $mandat_next_election_string = elgg_echo('groups_admins_elections:mandat:next_election');
 
 if (!$current_elected) {
-	$mandat_next_election = elgg_echo('groups_admins_elections:mandat:not_enougth_candidats');
+	$mandat_next_election = '<br/>' . elgg_echo('groups_admins_elections:mandat:not_enougth_candidats');
 	$owner_elected_icon = '<span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:not_elected') . '</span>';
 } else {
 	$owner_elected = get_entity($current_elected->owner_guid);
@@ -51,6 +51,10 @@ if ($full === 'in_group_profile') {
 	);
 	$title_link = elgg_view('output/url', $params);
 
+	if ($mandat->duration ==  '0') { //permanent
+		$mandat_next_election_tiny = '<br/><span class="elgg-river-timestamp">' . ucfirst(elgg_echo('groups_admins_elections:mandat:duration:permanent')) . '</span>';
+	}
+
 	$body = <<<HTML
 	<h3>$title_link</h3>
 	$owner_elected_icon $owner_elected_view $mandat_next_election_tiny
@@ -61,19 +65,19 @@ HTML;
 } else {
 
 	if ($current_elected) {
-		$mandat_next_election = gae_get_date_next_election($current_elected->end_mandat);
+		$mandat_next_election = '<br/>' . gae_get_date_next_election($current_elected->end_mandat);
 	}
 	
 	$candidats_count = gae_get_candidats($mandat->guid, true);
 	$candidats_count_string = elgg_echo('groups_admins_elections:mandat:nbr_candidats', array('<span>' . $candidats_count . '</span>'));
-	$candidats_count_url = elgg_view('output/url', array(
+	$candidats_count_url = '<p>' . elgg_view('output/url', array(
 		'href' => "elections/mandat/candidats/{$mandat->guid}/{$mandat->title}",
 		'text' => $candidats_count_string,
 		'is_trusted' => true,
-	));
+	)) . '</p>';
 	
 	$mandat_duration_string = elgg_echo('groups_admins_elections:mandat:duration');
-	$mandat_duration = elgg_echo('groups_admins_elections:mandat:duration:day', array($mandat->duration));
+	$mandat_duration = '<br/>' . elgg_echo('groups_admins_elections:mandat:duration:day', array($mandat->duration));
 	
 	$owner = $mandat->getOwnerEntity();
 
@@ -108,6 +112,11 @@ HTML;
 		'class' => 'elgg-menu-hz',
 	));
 
+	if ($mandat->duration ==  '0') { //permanent
+		$mandat_duration = elgg_echo('groups_admins_elections:mandat') . ' ' . elgg_echo('groups_admins_elections:mandat:duration:permanent');
+		$candidats_count_url = $mandat_next_election = $candidats_count_string = $mandat_duration_string = $mandat_next_election_string = '';
+	}
+
 	if ($full === true) {
 
 		$params = array(
@@ -125,9 +134,9 @@ HTML;
 	<ul class="mandat elgg-content row-fluid">
 		<li class="span8">$description</li>
 		<li class="elgg-heading-basic pam mtm span4">
-			<p>$candidats_count_url</p>
-			<p>$mandat_duration_string<br/>$mandat_duration</p>
-			<p>$mandat_next_election_string<br/>$mandat_next_election</p>
+			$candidats_count_url
+			<p>$mandat_duration_string $mandat_duration</p>
+			<p>$mandat_next_election_string $mandat_next_election</p>
 			$mandat_occuby_by
 		</li>
 	</ul>
@@ -154,7 +163,7 @@ HTML;
 		$body = <<<HTML
 	<ul class="mandat elgg-content row-fluid">
 		<li class="span8">$excerpt</li>
-		<li class="elgg-heading-basic pam span4">$candidats_count_string<br/>$mandat_duration<br/>$mandat_next_election<br/>$owner_elected_view</li>
+		<li class="elgg-heading-basic pam span4">$candidats_count_string $mandat_duration $mandat_next_election<br/>$owner_elected_view</li>
 	</ul>
 HTML;
 	

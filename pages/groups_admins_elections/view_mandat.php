@@ -31,30 +31,32 @@ elgg_push_breadcrumb($container->name, "elections/mandats/{$container->guid}/{$c
 
 $candidated = gae_check_user_can_candidate($mandat, $user_guid);
 
-if ($container->canWritetoContainer() && $candidated === true) {
-	elgg_register_menu_item('title', array(
-		'name' => 'groups_admins_elections_candidats_add',
-		'href' => "elections/add/$mandat_guid",
-		'text' => elgg_echo('groups_admins_elections:candidats:add'),
-		'link_class' => 'elgg-button elgg-button-action gwfb',
-	));
-} else if ($candidated) {
-	elgg_register_menu_item('title', array(
-		'name' => 'groups_admins_elections_candidat_mine',
-		'href' => $candidated->getURL() . $candidated->getOwnerEntity()->name,
-		'text' => elgg_echo('groups_admins_elections:candidat:mine'),
-		'link_class' => 'elgg-button elgg-button-action gwfb',
-	));
-}
-
-if ($container->canEdit() && gae_get_candidats($mandat->guid, true) >= 3) {
-	elgg_register_menu_item('title', array(
-		'name' => 'groups_admins_elections_mandats_elect',
-		'href' => elgg_add_action_tokens_to_url("action/elections/elect?guid=$mandat_guid"),
-		'text' => elgg_echo('groups_admins_elections:mandats:elect'),
-		'confirm' => elgg_echo('groups_admins_elections:mandats:do_elect'),
-		'link_class' => 'elgg-button elgg-button-action group_admin_only gwfb',
-	));
+if ($mandat->duration !=  '0') { // non permanent
+	if ($container->canWritetoContainer() && $candidated === true) {
+		elgg_register_menu_item('title', array(
+			'name' => 'groups_admins_elections_candidats_add',
+			'href' => "elections/add/$mandat_guid",
+			'text' => elgg_echo('groups_admins_elections:candidats:add'),
+			'link_class' => 'elgg-button elgg-button-action gwfb',
+		));
+	} else if ($candidated) {
+		elgg_register_menu_item('title', array(
+			'name' => 'groups_admins_elections_candidat_mine',
+			'href' => $candidated->getURL() . $candidated->getOwnerEntity()->name,
+			'text' => elgg_echo('groups_admins_elections:candidat:mine'),
+			'link_class' => 'elgg-button elgg-button-action gwfb',
+		));
+	}
+	
+	if ($container->canEdit() && gae_get_candidats($mandat->guid, true) >= 3) {
+		elgg_register_menu_item('title', array(
+			'name' => 'groups_admins_elections_mandats_elect',
+			'href' => elgg_add_action_tokens_to_url("action/elections/elect?guid=$mandat_guid"),
+			'text' => elgg_echo('groups_admins_elections:mandats:elect'),
+			'confirm' => elgg_echo('groups_admins_elections:mandats:do_elect'),
+			'link_class' => 'elgg-button elgg-button-action group_admin_only gwfb',
+		));
+	}
 }
 
 if ($filter_context == 'view') {
@@ -64,7 +66,7 @@ if ($filter_context == 'view') {
 	$content = elgg_view_entity($mandat, array('full_view' => true));
 	$content .= elgg_view_comments($mandat);
 
-} else if ($filter_context == 'candidats') {
+} else if ($filter_context == 'candidats' && $mandat->duration !=  '0') {
 	
 	elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$mandat->guid}/{$mandat->title}");
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:candidats'));
@@ -79,7 +81,7 @@ if ($filter_context == 'view') {
 		'pagination' => true
 	));
 	if (!$content) $content = elgg_echo('groups_admins_elections:candidats:none');
-} else if ($filter_context == 'history') {
+} else if ($filter_context == 'history' && $mandat->duration !=  '0') {
 
 	elgg_push_breadcrumb($mandat->title, "elections/mandat/view/{$mandat->guid}/{$mandat->title}");
 	elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandat:history'));
@@ -101,7 +103,7 @@ if ($filter_context == 'view') {
 }
 
 $body = elgg_view_layout('content', array(
-	'filter_override' => elgg_view('groups_admins_elections/filters/mandat_filter', array('mandat' => "{$mandat_guid}/{$title}")),
+	'filter_override' => elgg_view('groups_admins_elections/filters/mandat_filter', array('mandat' => $mandat)),
 	'content' => $content,
 	'title' => $title,
 	'sidebar' => elgg_view('groups_admins_elections/sidebar'),

@@ -55,6 +55,7 @@ $english = array(
 	'groups_admins_elections:mandat:next_election_date' => "%A %e %B %Y",
 	'groups_admins_elections:mandat:tiny_next_election_date' => "%d-%m-%y",
 	'groups_admins_elections:mandat:until' => "Jusqu'au",
+	'groups_admins_elections:mandat:duration:permanent' => "permanent",
 	
 	'groups_admins_elections:candidat:created_by' => "s'est porté candidat",
 	
@@ -83,7 +84,7 @@ $english = array(
 	/*
 	 * Form fields
 	 */
-	'groups_admins_elections:mandat:form:duration' => "Durée du mandat en jours. Laissez vide pour une durée indéterminée.",
+	'groups_admins_elections:mandat:form:duration' => "Durée du mandat en jours. Laissez vide ou 0 pour une durée indéterminée.",
 
 	/*
 	 * Status and error messages
