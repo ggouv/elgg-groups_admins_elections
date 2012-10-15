@@ -53,7 +53,7 @@ $summary = elgg_echo('river:create:object:elected', array($subject_link, $object
 
 $elected = get_entity($object->owner_guid);
 
-$message = elgg_echo('river_elected_message', array('@' . $elected->name, $object->nbr_candidats));
+$message = deck_river_wire_filter(elgg_echo('river_elected_message', array('@' . $elected->name, $object->nbr_candidats)));
 if ($object->first_election) $message .= '<span class="elgg-subtext">&nbsp;' . elgg_echo('river_elected_message:first_election') . '</span>';
 
 $vars['item']->summary = $summary;

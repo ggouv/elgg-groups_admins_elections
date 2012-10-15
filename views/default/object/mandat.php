@@ -34,7 +34,7 @@ if (!$current_elected) {
 				'value' => $owner_elected->getURL(),
 				'is_trusted' => true,
 			));
-	$mandat_occuby_by = '<div>' . elgg_echo('groups_admins_elections:mandat:occupy_by') . '</div>' . $owner_elected_icon . $owner_elected_view;
+	$mandat_occuby_by = '<p class="mbn">' . elgg_echo('groups_admins_elections:mandat:occupy_by') . '</p>' . $owner_elected_icon . $owner_elected_view;
 }
 
 if ($full === 'in_group_profile') {
@@ -163,7 +163,7 @@ HTML;
 		$body = <<<HTML
 	<ul class="mandat elgg-content row-fluid">
 		<li class="span8">$excerpt</li>
-		<li class="elgg-heading-basic pam span4">$candidats_count_string $mandat_duration $mandat_next_election<br/>$owner_elected_view</li>
+		<li class="elgg-heading-basic pam span4"><p>$candidats_count_string $mandat_duration $mandat_next_election<br/>$owner_elected_view</p></li>
 	</ul>
 HTML;
 	

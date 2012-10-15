@@ -50,7 +50,6 @@ if (!$guid) {
 
 $mandat->title = $title;
 $mandat->description = $description;
-$mandat->container_guid = $container_guid;
 $mandat->access_id = $group->access_id;
 $mandat->duration = $duration;
 

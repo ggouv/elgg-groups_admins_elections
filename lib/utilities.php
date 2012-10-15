@@ -167,7 +167,7 @@ function gae_check_user_can_candidate($mandat, $user_guid = null) {
 		'metadata_value' => $mandat->guid,
 		'limit' => 0,
 	));
-	if (count($candidated) >= 1) return $candidated[0];
+	if (is_array($candidated) && count($candidated) >= 1) return $candidated[0];
 	
 	return true;
 }
