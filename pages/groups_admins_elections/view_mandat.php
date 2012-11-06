@@ -39,7 +39,7 @@ if ($mandat->duration !=  '0') { // non permanent
 			'text' => elgg_echo('groups_admins_elections:candidats:add'),
 			'link_class' => 'elgg-button elgg-button-action gwfb',
 		));
-	} else if ($candidated) {
+	} else if ($container->canWritetoContainer() && $candidated) {
 		elgg_register_menu_item('title', array(
 			'name' => 'groups_admins_elections_candidat_mine',
 			'href' => $candidated->getURL() . $candidated->getOwnerEntity()->name,
