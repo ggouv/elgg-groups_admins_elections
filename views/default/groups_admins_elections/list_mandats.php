@@ -10,14 +10,14 @@
  *
  **/
 
-$group_guid = elgg_get_page_owner_guid();
+$group = elgg_get_page_owner_entity();
 
 /*echo "<a href='" . elgg_get_site_url() . "elections/group/$container_guid/mandats' class='elgg-button elgg-button-action'>admins page</a>";*/
 
 $list_mandats = elgg_get_entities(array(
 	'type' => 'object',
 	'subtype' => 'mandat',
-	'container_guid' => $group_guid,
+	'container_guid' => $group->guid,
 	'limit' => 0,
 	'order_by' => 'time_created asc'
 ));
@@ -27,11 +27,11 @@ if ($list_mandats) {
 		$html .= elgg_view_list_item($item, array('full_view' => 'in_group_profile'));
 		$html .= '</li>';
 	}
-} else {
-	$html = elgg_view('output/url', array(
-		'href' => elgg_get_site_url() . "elections/add/{$group_guid}",
+} else if ($group->canEdit()) {
+	$html .= elgg_view('output/url', array(
+		'href' => elgg_get_site_url() . "elections/add/{$group->guid}",
 		'text' => elgg_echo('groups_admins_elections:mandats:add'),
-		'class' => 'elgg-button elgg-button-action group_admin_only gwfb',
+		'class' => 'elgg-button elgg-button-action group_admin_only gwfb mtl',
 		'is_trusted' => false,
 	));
 }
