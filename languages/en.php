@@ -80,6 +80,9 @@ $english = array(
 	'river_elected' => "a lancé le tirage au sort",
 	'river_elected_message' => "%s a été tiré au sort parmi %s candidats !",
 	'river_elected_message:first_election' => "Tirage au sort lancé automatiquement pour la première élection.",
+	'river:comment:object:mandat' => "%s a commenté le mandat %s",
+	'river:comment:object:candidat' => "%s a commenté la candidature de %s",
+	'river:comment:object:elected' => "%s a commenté la mandature de %s",
 	
 	/*
 	 * Form fields

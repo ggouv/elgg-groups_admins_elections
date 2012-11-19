@@ -43,7 +43,7 @@ $body = elgg_view_layout('content', array(
 	'filter' => '',
 	'content' => $content,
 	'title' => $title,
-	'sidebar' => 'auie' . elgg_view('groups_admins_elections/sidebar'),
+	'sidebar' => elgg_view('groups_admins_elections/sidebar'),
 ));
 
 echo elgg_view_page($title, $body);

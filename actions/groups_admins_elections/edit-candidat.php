@@ -18,7 +18,7 @@ $description = get_input('description');
 $guid = (int)get_input('guid');
 $mandat_guid = (int)get_input('mandat_guid');
 
-$user_guid = elgg_get_logged_in_user_guid();
+$user = elgg_get_logged_in_user_entity();
 
 if (!$mandat_guid) {
 	register_error(elgg_echo('groups_admins_elections:candidat:save:fail'));
@@ -35,7 +35,7 @@ if (!$group || !$group->canWritetoContainer()) {
 $candidated = elgg_get_entities_from_metadata(array(
 	'type' => 'object',
 	'subtype' => 'candidat',
-	'owner_guid' => $user_guid,
+	'owner_guid' => $user->guid,
 	'metadata_name' => 'mandat_guid',
 	'metadata_value' => $mandat->guid,
 	'limit' => 0,
@@ -63,6 +63,7 @@ if (!$guid) {
 	$candidat = get_entity($guid);
 }
 
+$candidat->title = $user->name;
 $candidat->description = $description;
 
 if ($candidat->save()) {
@@ -72,11 +73,11 @@ if ($candidat->save()) {
 	system_message(elgg_echo('groups_admins_elections:candidat:save:success'));
 
 	if ($new) {
-		add_to_river('river/object/candidat/create','create', $user_guid, $candidat->getGUID());
+		add_to_river('river/object/candidat/create','create', $user->guid, $candidat->getGUID());
 	}
 	
 	$params['mandat'] = $mandat_guid;
-	$params['election_triggered_by'] = $user_guid;
+	$params['election_triggered_by'] = $user->guid;
 	elgg_trigger_plugin_hook('election', 'bycandidat', $params);
 	
 	forward($candidat->getURL());
