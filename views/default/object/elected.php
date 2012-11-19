@@ -88,7 +88,7 @@ HTML;
 	
 	$title_link = elgg_view('output/url', array(
 		'text' => $title,
-		'href' => $elected->getURL() . "{$owner->name}",
+		'href' => $elected->getURL(),
 		'is_trusted' => true,
 	));
 

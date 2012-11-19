@@ -30,7 +30,7 @@ if (!$group || !$group->canEdit()) {
 }
 
 elgg_load_library('groups_admins_elections:utilities');
-$elected = gae_perform_election($mandat, $user_guid, true);
+$elected = gae_perform_election($mandat, $user_guid, false);
 
 if ($elected) {
 	$user_elected = get_entity($elected->owner_guid);

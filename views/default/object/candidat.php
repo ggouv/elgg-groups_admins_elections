@@ -81,7 +81,7 @@ HTML;
 	
 	$title_link = elgg_view('output/url', array(
 		'text' => elgg_echo('groups_admins_elections:candidat:created_by'),
-		'href' => $candidat->getURL() . "{$owner->name}",
+		'href' => $candidat->getURL(),
 		'is_trusted' => true,
 	));
 
