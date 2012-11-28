@@ -52,7 +52,7 @@ $summary = elgg_echo('river:create:object:elected', array($subject_link, $object
 $elected = get_entity($object->owner_guid);
 
 $message = elgg_echo('river_elected_message', array('@' . $elected->name, $object->nbr_candidats));
-if ($object->first_election) $message .= '<span class="elgg-subtext">&nbsp;' . elgg_echo('river_elected_message:first_election') . '</span>';
+if ($object->more_message) $message .= $more_message;
 
 echo elgg_view('river/elements/layout', array(
 	'item' => $vars['item'],

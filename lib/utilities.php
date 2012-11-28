@@ -175,10 +175,11 @@ function gae_check_user_can_candidate($mandat, $user_guid = null) {
  *
  * @param ElggObject $mandat mandat to perform election
  * @param int $triggered_by GUID of user who perform election
- * @param bool $first_election (default false) set true if this is the first election for this mandat
+ * @param string $mode mode of election : 'random' only for the moment.
+ * @param string $more_message (default false) add a message to add to the description. Exemple: first election for this mandat
  * @return ElggUser candidat elected
  */
-function gae_perform_election($mandat, $triggered_by, $first_election = false) {
+function gae_perform_election($mandat, $mode, $triggered_by, $more_message = false) {
 	global $CONFIG;
 	
 	$group = get_entity($mandat->container_guid);
@@ -192,21 +193,24 @@ function gae_perform_election($mandat, $triggered_by, $first_election = false) {
 	
 	$current_elected = gae_get_elected($mandat->guid);
 	
-	// make sorted election
-	shuffle($candidats); // randomizes the order of the elements in the array
-	$elected = $candidats[mt_rand(0, $count_candidats-1)]; // get a random item
+	if ($mode == 'random') {
+		// make sorted election
+		shuffle($candidats); // randomizes the order of the elements in the array
+		$elected = $candidats[mt_rand(0, $count_candidats-1)]; // get a random item
+	}
 	
 	$subtype_id = add_subtype('object', 'elected');
 	$time = time();
 	
-	$user_elected = get_entity($elected->owner_guid);
-	$message = elgg_echo('river_elected_message', array('@' . $user_elected->name, $count_candidats));
-	if ($first_election) $message .= '<span class="elgg-subtext">&nbsp;' . elgg_echo('river_elected_message:first_election') . '</span>';
-	$description = $message . '  ' . chr(13) . $elected->description;
-	
+	// update candidat to elected entity
 	$result = update_data("UPDATE {$CONFIG->dbprefix}entities
 							SET subtype = '$subtype_id', time_updated = $time, last_action = $time
 							WHERE {$CONFIG->dbprefix}entities.guid = {$elected->guid}");
+	
+	$user_elected = get_entity($elected->owner_guid);
+	$message = elgg_echo('river_elected_message:' . $mode, array('@' . $user_elected->name, $count_candidats));
+	if ($more_message) $message .= $more_message;
+	$description = $message . '<br/>' . $elected->description;
 	
 	$result2 = update_data("UPDATE {$CONFIG->dbprefix}objects_entity
 							SET description = '$description'
@@ -215,7 +219,7 @@ function gae_perform_election($mandat, $triggered_by, $first_election = false) {
 	if ($result && $result2) {
 		create_metadata($elected->guid, 'end_mandat', $time + ($mandat->duration * 24 * 60 * 60), 'integer', $elected->owner_guid, 2);
 		create_metadata($elected->guid, 'nbr_candidats', $count_candidats, 'integer', $elected->owner_guid, 2);
-		if ($first_election) create_metadata($elected->guid, 'first_election', true, 'integer', $elected->owner_guid, 2);
+		if ($more_message) create_metadata($elected->guid, 'more_message', $more_message, 'text', $elected->owner_guid, 2);
 		$elected->addRelationship($triggered_by, 'election_triggered_by');
 		
 		remove_entity_relationship($current_elected->owner_guid, 'elected_in', $group->guid);

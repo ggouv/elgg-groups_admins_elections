@@ -78,8 +78,7 @@ $english = array(
 	'river_be_candidat' => "porté candidat",
 	'river:create:object:elected' => "%s %s pour le mandat de %s %s",
 	'river_elected' => "a lancé le tirage au sort",
-	'river_elected_message' => "%s a été tiré au sort parmi %s candidats !",
-	'river_elected_message:first_election' => "Tirage au sort lancé automatiquement pour la première élection.",
+	'river_elected_message:random' => "%s a été tiré au sort parmi %s candidats !",
 	'river:comment:object:mandat' => "%s a commenté le mandat %s",
 	'river:comment:object:candidat' => "%s a commenté la candidature de %s",
 	'river:comment:object:elected' => "%s a commenté la mandature de %s",
@@ -87,7 +86,7 @@ $english = array(
 	/*
 	 * Form fields
 	 */
-	'groups_admins_elections:mandat:form:duration' => "Durée du mandat en jours. Laissez vide ou 0 pour une durée indéterminée.",
+	'groups_admins_elections:mandat:form:duration' => "Durée du mandat en jours. Laissez vide ou 0 pour une durée indéterminée",
 
 	/*
 	 * Status and error messages
