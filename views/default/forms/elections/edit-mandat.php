@@ -15,6 +15,7 @@
 $title = elgg_extract('title', $vars, '');
 $desc = elgg_extract('description', $vars, '');
 $duration = elgg_extract('duration', $vars, 15);
+$choose_mandated = elgg_extract('choose_mandated', $vars, false);
 $container_guid = elgg_extract('container_guid', $vars);
 $guid = elgg_extract('guid', $vars, null);
 ?>
@@ -32,6 +33,14 @@ $guid = elgg_extract('guid', $vars, null);
 <div>
 	<label><?php echo elgg_echo('groups_admins_elections:mandat:form:duration'); ?></label><br />
 	<?php echo elgg_view('input/text', array('name' => 'duration', 'value' => $duration)); ?>
+</div>
+
+<div>
+	<label><?php echo elgg_echo('groups_admins_elections:mandat:form:userpicker'); ?></label><br />
+	<?php
+		$user[] = $choose_mandated[0]; // Force first person to be choosed. Need to find a way to choose only one person
+		echo elgg_view('input/userpicker', array('name' => 'choose_mandated', 'value' => $user));
+	?>
 </div>
 
 <div class="elgg-foot">

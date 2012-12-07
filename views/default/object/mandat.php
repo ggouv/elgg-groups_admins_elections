@@ -25,7 +25,7 @@ $mandat_next_election_string = elgg_echo('groups_admins_elections:mandat:next_el
 
 if (!$current_elected) {
 	$mandat_next_election = '<br/>' . elgg_echo('groups_admins_elections:mandat:not_enougth_candidats');
-	$owner_elected_icon = '<span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:not_elected') . '</span>';
+	$owner_elected_icon = '<div class="mandat-group-profile mts">' . elgg_echo('groups_admins_elections:mandat:not_elected') . '</div>';
 } else {
 	$owner_elected = get_entity($current_elected->owner_guid);
 	$owner_elected_icon = elgg_view_entity_icon($owner_elected, 'small', array('class' => 'float mrs mts'));
@@ -40,8 +40,13 @@ if (!$current_elected) {
 if ($full === 'in_group_profile') {
 
 	if ($current_elected) {
-		$mandat_next_election_tiny = '<br/><span class="elgg-river-timestamp">' . elgg_echo('groups_admins_elections:mandat:until') . '</span><br/><span class="elgg-river-timestamp date">' .
-			gae_get_date_next_election($current_elected->end_mandat, 'groups_admins_elections:mandat:tiny_next_election_date') . '</span>';
+		if ($mandat->duration ==  '0') { //permanent
+			$mandat_next_election_tiny = '<div class="mandat-group-profile">' . ucfirst(elgg_echo('groups_admins_elections:mandat:duration:permanent')) . '</div>';
+		} else {
+			$mandat_next_election_tiny = '<div class="mandat-group-profile">' . elgg_echo('groups_admins_elections:mandat:until') . '<br/>' .
+			gae_get_date_next_election($current_elected->end_mandat, 'groups_admins_elections:mandat:tiny_next_election_date') . '</div>';
+		}
+		
 	}
 	
 	$params = array(
@@ -51,9 +56,7 @@ if ($full === 'in_group_profile') {
 	);
 	$title_link = elgg_view('output/url', $params);
 
-	if ($mandat->duration ==  '0') { //permanent
-		$mandat_next_election_tiny = '<br/><span class="elgg-river-timestamp">' . ucfirst(elgg_echo('groups_admins_elections:mandat:duration:permanent')) . '</span>';
-	}
+	
 
 	$body = <<<HTML
 	<h3>$title_link</h3>

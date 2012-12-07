@@ -16,6 +16,8 @@ $item = $vars['item'];
 $subject = $item->getSubjectEntity();
 $object = $item->getObjectEntity();
 $mandat = get_entity($object->mandat_guid);
+$elected = get_entity($object->owner_guid);
+$mode = $object->mode;
 
 $subject_link = elgg_view('output/url', array(
 	'href' => $subject->getURL(),
@@ -26,7 +28,7 @@ $subject_link = elgg_view('output/url', array(
 
 $object_link = elgg_view('output/url', array(
 	'href' => $object->getURL(),
-	'text' => elgg_echo('river_elected'),
+	'text' => elgg_echo('river_elected:' . $mode, array($elected->name)),
 	'class' => 'elgg-river-object',
 	'is_trusted' => true,
 ));
@@ -51,10 +53,8 @@ if ($container instanceof ElggGroup) {
 
 $summary = elgg_echo('river:create:object:elected', array($subject_link, $object_link, $mandat_link, $group_string));
 
-$elected = get_entity($object->owner_guid);
-
-$message = deck_river_wire_filter(elgg_echo('river_elected_message', array('@' . $elected->name, $object->nbr_candidats)));
-if ($object->more_message) $message .= $object->more_message;
+$message = deck_river_wire_filter(elgg_echo('river_elected_message:' . $mode, array($elected->name, $object->nbr_candidats)));
+if ($object->more_message) $message .= ' ' . deck_river_wire_filter($object->more_message);
 
 $vars['item']->summary = $summary;
 $vars['item']->message = $message;

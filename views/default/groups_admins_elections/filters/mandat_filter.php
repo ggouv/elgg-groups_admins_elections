@@ -34,15 +34,9 @@ $tabs = array(
 	),
 );
 
-if ($mandat->duration !=  '0') {
-	foreach ($tabs as $name => $tab) {
-		$tab['name'] = $name;
-		
-		elgg_register_menu_item('filter', $tab);
-	}
-} else {
-	$tab = $tabs['view'];
-	$tab['name'] = 'view';
+foreach ($tabs as $name => $tab) {
+	$tab['name'] = $name;
+	
 	elgg_register_menu_item('filter', $tab);
 }
 

@@ -17,6 +17,7 @@ elgg_make_sticky_form('mandat');
 $title = strip_tags(get_input('title'));
 $description = get_input('description');
 $duration = (int)get_input('duration');
+$selected_user_guid = get_input('members', false);
 $guid = (int)get_input('guid');
 $container_guid = (int)get_input('container_guid', elgg_get_page_owner_guid());
 
@@ -55,11 +56,27 @@ $mandat->duration = $duration;
 
 if ($mandat->save()) {
 
+	if ($selected_user_guid) {
+		elgg_load_library('groups_admins_elections:utilities');
+		
+		if (is_array($selected_user_guid)) $selected_user_guid = $selected_user_guid[0];
+		$selected_user = get_entity($selected_user_guid);
+		$user_trigger_election = get_entity($user_guid);
+		
+		$elected = gae_perform_election($mandat, $selected_user, $user_guid, elgg_echo('groups_admins_elections:selected', array($user_trigger_election->name)));
+		
+		if ($elected) {
+			system_message(elgg_echo('groups_admins_elections:mandat:save:selected_user', array($selected_user->name)));
+			add_to_river('river/object/elected/create','create', $user_guid, $elected->guid);
+			
+		}
+	}
+
 	elgg_clear_sticky_form('mandat');
 
 	system_message(elgg_echo('groups_admins_elections:mandat:save:success'));
 
-	add_to_river('river/object/mandat/create','create', $user_guid, $mandat->getGUID());
+	if ($new) add_to_river('river/object/mandat/create','create', $user_guid, $mandat->getGUID());
 
 	forward($mandat->getURL());
 } else {
