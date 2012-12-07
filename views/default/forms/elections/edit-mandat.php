@@ -39,7 +39,11 @@ $guid = elgg_extract('guid', $vars, null);
 	<label><?php echo elgg_echo('groups_admins_elections:mandat:form:userpicker'); ?></label><br />
 	<?php
 		$user[] = $choose_mandated[0]; // Force first person to be choosed. Need to find a way to choose only one person
-		echo elgg_view('input/userpicker', array('name' => 'choose_mandated', 'value' => $user));
+		echo elgg_view('input/autocomplete', array(
+			'name' => 'choose_mandated',
+			'value' => $user,
+			'match_on' => 'users'
+		));
 	?>
 </div>
 

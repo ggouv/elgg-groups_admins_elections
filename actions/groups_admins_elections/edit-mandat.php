@@ -17,7 +17,7 @@ elgg_make_sticky_form('mandat');
 $title = strip_tags(get_input('title'));
 $description = get_input('description');
 $duration = (int)get_input('duration');
-$selected_user_guid = get_input('members', false);
+$selected_user_name = get_input('choose_mandated', false);
 $guid = (int)get_input('guid');
 $container_guid = (int)get_input('container_guid', elgg_get_page_owner_guid());
 
@@ -56,11 +56,9 @@ $mandat->duration = $duration;
 
 if ($mandat->save()) {
 
-	if ($selected_user_guid) {
+	if ($selected_user = get_user_by_username($selected_user_name)) {
 		elgg_load_library('groups_admins_elections:utilities');
 		
-		if (is_array($selected_user_guid)) $selected_user_guid = $selected_user_guid[0];
-		$selected_user = get_entity($selected_user_guid);
 		$user_trigger_election = get_entity($user_guid);
 		
 		$elected = gae_perform_election($mandat, $selected_user, $user_guid, elgg_echo('groups_admins_elections:selected', array($user_trigger_election->name)));

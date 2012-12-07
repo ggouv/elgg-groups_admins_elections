@@ -117,7 +117,7 @@ HTML;
 
 	if ($mandat->duration ==  '0') { //permanent
 		$mandat_duration = elgg_echo('groups_admins_elections:mandat') . ' ' . elgg_echo('groups_admins_elections:mandat:duration:permanent');
-		$candidats_count_url = $mandat_next_election = $candidats_count_string = $mandat_duration_string = $mandat_next_election_string = '';
+		$mandat_next_election = $mandat_duration_string = $mandat_next_election_string = '';
 	}
 
 	if ($full === true) {
