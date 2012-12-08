@@ -25,9 +25,9 @@ if (!$elected || !$container) {
 
 $elected_now = gae_get_elected($mandat->guid);
 if ($elected == $elected_now) {
-	$title = elgg_echo('groups_admins_elections:elected_now:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created)));
+	$title = elgg_echo('groups_admins_elections:elected_now:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated)));
 } else {
-	$title = elgg_echo('groups_admins_elections:elected:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created), strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated)));
+	$title = elgg_echo('groups_admins_elections:elected:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated), strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->last_action)));
 }
 
 elgg_push_breadcrumb(elgg_echo('groups_admins_elections:mandats'), 'elections/all');

@@ -201,6 +201,7 @@ function gae_perform_election($mandat, $mode, $triggered_by, $more_message = fal
 
 	} else if ( elgg_instanceof($mode, 'user') ) { // Check if $mode is an user and assume we selected user in edit_mandat form
 		$elected = gae_check_user_can_candidate($mandat, $mode->guid);
+
 		if	($elected === true || $elected === false) {
 			register_error(elgg_echo('groups_admins_elections:mandat:save:selected_user:error', array($mode->name)));
 			return false;
@@ -218,18 +219,7 @@ function gae_perform_election($mandat, $mode, $triggered_by, $more_message = fal
 						SET subtype = '$subtype_id', time_updated = $time, last_action = $time
 						WHERE {$CONFIG->dbprefix}entities.guid = {$elected->guid}");
 	
-	$user_elected = get_entity($elected->owner_guid);
-	
-	$message = elgg_echo('river_elected_message:' . $mode, array($user_elected->name, $count_candidats));
-	if ($more_message) $message .= $more_message;
-	$description = $message . '<br/>' . $elected->description;
-	$description = sanitise_string($description);
-	
-	$result2 = update_data("UPDATE {$CONFIG->dbprefix}objects_entity
-							SET description = '$description'
-							WHERE {$CONFIG->dbprefix}objects_entity.guid = {$elected->guid}");
-	
-	if ($result && $result2) {
+	if ($result) {
 		create_metadata($elected->guid, 'end_mandat', $time + ($mandat->duration * 24 * 60 * 60), 'integer', $elected->owner_guid, 2);
 		create_metadata($elected->guid, 'nbr_candidats', $count_candidats, 'integer', $elected->owner_guid, 2);
 		create_metadata($elected->guid, 'mode', $mode, 'text', $elected->owner_guid, 2);
@@ -237,6 +227,11 @@ function gae_perform_election($mandat, $mode, $triggered_by, $more_message = fal
 		$elected->addRelationship($triggered_by, 'election_triggered_by');
 		
 		remove_entity_relationship($current_elected->owner_guid, 'elected_in', $group->guid);
+		update_data("UPDATE {$CONFIG->dbprefix}entities
+						SET last_action = $time
+						WHERE {$CONFIG->dbprefix}entities.guid = {$current_elected->guid}");
+		
+		$user_elected = get_entity($elected->owner_guid);
 		$user_elected->addRelationship($group->guid, 'elected_in');
 	
 		return $elected;

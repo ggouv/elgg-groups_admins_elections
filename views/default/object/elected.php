@@ -28,7 +28,7 @@ $owner_link = elgg_view('output/url', array(
 	'is_trusted' => true,
 ));
 
-$date = elgg_view_friendly_time($elected->time_created);
+$date = elgg_view_friendly_time($elected->time_updated);
 
 $comments_count = $elected->countComments();
 //only display if there are commments
@@ -77,13 +77,20 @@ HTML;
 
 } else {
 	// brief view
-	$excerpt = elgg_get_excerpt($elected->description);
+	//$excerpt = elgg_get_excerpt($elected->description);
+	$excerpt = elgg_view('output/longtext', array(
+		'value' => elgg_echo('river_elected_message:' . $elected->mode, array($owner->name, $elected->nbr_candidats)) . ' ' . $elected->more_message
+	));
 	
-	$elected_now = gae_get_elected($mandat->guid);
-	if ($elected == $elected_now) {
-		$title = elgg_echo('groups_admins_elections:elected:is') . lcfirst(elgg_echo('groups_admins_elections:elected_now:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created))));
+/*	$message = elgg_echo('river_elected_message:' . $mode, array($user_elected->name, $count_candidats));
+	if ($more_message) $message .= $more_message;
+	$description = $message . '<br/>' . $elected->description;
+	$description = sanitise_string($description);*/
+	
+	if ($elected->time_updated == $elected->last_action) {
+		$title = elgg_echo('groups_admins_elections:elected:is') . lcfirst(elgg_echo('groups_admins_elections:elected_now:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated))));
 	} else {
-		$title = elgg_echo('groups_admins_elections:elected:fromto') . lcfirst(elgg_echo('groups_admins_elections:elected:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_created), strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated))));
+		$title = elgg_echo('groups_admins_elections:elected:fromto') . lcfirst(elgg_echo('groups_admins_elections:elected:title', array(strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->time_updated), strftime(elgg_echo('groups_admins_elections:elected:date'), $elected->last_action))));
 	}
 	
 	$title_link = elgg_view('output/url', array(

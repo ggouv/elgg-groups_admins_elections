@@ -60,7 +60,7 @@ if ($mandat->save()) {
 		elgg_load_library('groups_admins_elections:utilities');
 		
 		$user_trigger_election = get_entity($user_guid);
-		
+
 		$elected = gae_perform_election($mandat, $selected_user, $user_guid, elgg_echo('groups_admins_elections:selected', array($user_trigger_election->name)));
 		
 		if ($elected) {
