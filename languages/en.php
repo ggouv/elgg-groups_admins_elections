@@ -19,6 +19,7 @@ $english = array(
 	'groups_admins_elections:mandat:title:new' => "Créer un nouveau mandat pour le groupe %s",
 	'groups_admins_elections:mandat' => "Mandat",
 	'groups_admins_elections:mandats' => "Mandats",
+	'groups_admins_elections:mandats:all' => "Tous les mandats",
 	'groups_admins_elections:mandat:history' => "Historique",
 	'groups_admins_elections:mandat:edit' => "Modifier",
 	'groups_admins_elections:mandat:title:edit' => "Modifier le mandat %s",
