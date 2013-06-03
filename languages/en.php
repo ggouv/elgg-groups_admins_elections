@@ -24,7 +24,7 @@ $english = array(
 	'groups_admins_elections:mandat:edit' => "Modifier",
 	'groups_admins_elections:mandat:title:edit' => "Modifier le mandat %s",
 	'groups_admins_elections:mandats:do_elect' => "Êtes-vous sûr de lancer le tirage au sort maintenant ?",
-	
+
 	'groups_admins_elections:candidat:new' => "Se porter candidat",
 	'groups_admins_elections:candidat:mine' => "Ma candidature",
 	'groups_admins_elections:candidats' => "Candidats",
@@ -39,40 +39,41 @@ $english = array(
 	'groups_admins_elections:elected:date' => "%d/%m/%Y",
 	'groups_admins_elections:elected:title' => "Mandataire du %s au %s",
 	'groups_admins_elections:elected_now:title' => "Mandataire depuis le %s",
-	
+
 	'groups_admins_elections:list:none' => "Il n'y a aucun mandat.",
-	
+
 	/*
 	 * Objects
 	 */
 	'groups_admins_elections:mandat:nbr_candidats' => "%s candidats",
+	'groups_admins_elections:mandat:no_candidat' => "Pas de candidats",
 	'groups_admins_elections:mandat:created_by' => "Créé par %s",
 	'groups_admins_elections:mandat:duration' => "Durée du mandat",
 	'groups_admins_elections:mandat:duration:day' => "%s jours",
 	'groups_admins_elections:mandat:not_enougth_candidats' => "Pas assez de candidats pour le tirage au sort",
-	'groups_admins_elections:mandat:not_elected' => "Pas de candidats.<br/>Inscrivez-vous !",
+	'groups_admins_elections:mandat:want_candidate' => "Inscrivez-vous !",
 	'groups_admins_elections:mandat:occupy_by' => "Mandataire actuel",
 	'groups_admins_elections:mandat:next_election' => "Prochain tirage au sort",
 	'groups_admins_elections:mandat:next_election_date' => "%A %e %B %Y",
 	'groups_admins_elections:mandat:tiny_next_election_date' => "%d-%m-%y",
 	'groups_admins_elections:mandat:until' => "Jusqu'au",
 	'groups_admins_elections:mandat:duration:permanent' => "durée indéterminée",
-	
+
 	'groups_admins_elections:candidat:created_by' => "s'est porté candidat",
-	
+
 	'groups_admins_elections:elected:is' => " est ",
 	'groups_admins_elections:elected:fromto' => " a été ",
-	
+
 	'groups_admins_elections:selected' => " par @%s.<br/>",
-	
-	
+
+
 	/*
 	 * Buttons
 	 */
 	'groups_admins_elections:mandats:add' => "Ajouter un mandat",
 	'groups_admins_elections:candidats:add' => "Se porter candidat",
 	'groups_admins_elections:mandats:elect' => "Lancer le tirage au sort",
-	
+
 	/*
 	 * River
 	 */
@@ -87,7 +88,7 @@ $english = array(
 	'river:comment:object:mandat' => "%s a commenté le mandat %s",
 	'river:comment:object:candidat' => "%s a commenté la candidature de %s",
 	'river:comment:object:elected' => "%s a commenté la mandature de %s",
-	
+
 	/*
 	 * Form fields
 	 */
@@ -112,7 +113,7 @@ $english = array(
 	/*
 	 * Settings
 	 */
-
+	'groups_admins_elections:mandat:default:description' => "Description par défaut des nouveaux mandats :",
 
 );
 

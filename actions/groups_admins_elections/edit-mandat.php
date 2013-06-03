@@ -58,15 +58,15 @@ if ($mandat->save()) {
 
 	if ($selected_user = get_user_by_username($selected_user_name)) {
 		elgg_load_library('groups_admins_elections:utilities');
-		
+
 		$user_trigger_election = get_entity($user_guid);
 
 		$elected = gae_perform_election($mandat, $selected_user, $user_guid, elgg_echo('groups_admins_elections:selected', array($user_trigger_election->name)));
-		
+
 		if ($elected) {
 			system_message(elgg_echo('groups_admins_elections:mandat:save:selected_user', array($selected_user->name)));
 			add_to_river('river/object/elected/create','create', $user_guid, $elected->guid);
-			
+
 		}
 	}
 
