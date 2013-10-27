@@ -57,4 +57,4 @@ $summary = elgg_echo('river:create:object:candidat', array($subject_link, $objec
 $vars['item']->summary = $summary;
 $vars['item']->message = $message;
 
-$jsonexport['activity'][] = $vars['item'];
+$jsonexport['results'][] = $vars['item'];

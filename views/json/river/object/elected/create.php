@@ -53,10 +53,10 @@ if ($container instanceof ElggGroup) {
 
 $summary = elgg_echo('river:create:object:elected', array($subject_link, $object_link, $mandat_link, $group_string));
 
-$message = deck_river_wire_filter(elgg_echo('river_elected_message:' . $mode, array($elected->name, $object->nbr_candidats)));
-if ($object->more_message) $message .= ' ' . deck_river_wire_filter($object->more_message);
+$message = elgg_echo('river_elected_message:' . $mode, array($elected->name, $object->nbr_candidats));
+if ($object->more_message) $message .= ' ' . $object->more_message;
 
 $vars['item']->summary = $summary;
 $vars['item']->message = $message;
 
-$jsonexport['activity'][] = $vars['item'];
+$jsonexport['results'][] = $vars['item'];
